@@ -12,4 +12,5 @@ MVC pattern
 Module pattern  
 No Framework  
 Single Page Application  
-Bundling without webpack
+Bundling without webpack  
+Routing with simple function
