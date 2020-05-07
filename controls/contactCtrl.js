@@ -32,17 +32,17 @@ var contact_control = (function() {
   }
 
   // dictate all of handlers for page
-  function attachHandler(routes) {
+  function attachHandler(router) {
     console.log("contactpage handler attached !");
   }
 
   // watch out orders of methods
-  function control(routes) {
+  function control(router) {
     init();
     getData();
     bindData();
     render();
-    attachHandler(routes);
+    attachHandler(router);
   }
   return {
     control

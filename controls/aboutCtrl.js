@@ -32,17 +32,17 @@ var about_control = (function() {
   }
 
   // dictate all of handlers for page
-  function attachHandler(routes) {
+  function attachHandler(router) {
     console.log("aboutpage handler attached !");
   }
 
   // watch out orders of methods
-  function control(routes) {
+  function control(router) {
     init();
     getData();
     bindData();
     render();
-    attachHandler(routes);
+    attachHandler(router);
   }
   return {
     control

@@ -50,21 +50,21 @@ var home_control = (function() {
   }
 
   // dictate all of handlers for page
-  function attachHandler(routes) {
+  function attachHandler(router) {
     console.log("homepage handler attached !");
     nav.addEventListener("click", function(e) {
-      routes[e.target.dataset.url]();
-      window.history.pushState({}, "", window.location.pathname);
+      router(e.target.dataset.url);
+      window.history.pushState({}, "", e.target.dataset.url);
     });
   }
 
   // watch out orders of methods
-  function control(routes) {
+  function control(router) {
     init();
     getData();
     bindData();
     render();
-    attachHandler(routes);
+    attachHandler(router);
   }
   return {
     control
