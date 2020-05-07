@@ -17,7 +17,7 @@ var contact_control = (function() {
   }
 
   // fetch data from server, REST API, localStorage, URL parameters, URL querystring
-  function getData() {
+  function getData(params) {
     // contact_data = fetch();
     contact_data = { title: "contact page" };
   }
@@ -37,9 +37,9 @@ var contact_control = (function() {
   }
 
   // watch out orders of methods
-  function control(router) {
+  function control(router, params) {
     init();
-    getData();
+    getData(params);
     bindData();
     render();
     attachHandler(router);

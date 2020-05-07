@@ -3,7 +3,7 @@
 /*home data
 {
   title,
-  order
+  list
 }
 */
 
@@ -25,7 +25,7 @@ var home_control = (function() {
   }
 
   // fetch data from server, REST API, localStorage, URL parameters, URL querystring (Model)
-  function getData() {
+  function getData(params) {
     // home_data = fetch();
     home_data = { title: "home page", list: ["apple", "banana", "orange"] };
   }
@@ -36,7 +36,7 @@ var home_control = (function() {
     home_data.list.forEach(function(fruit) {
       item_template += item_component.bindData(fruit);
     });
-    nav_template = nav_component.bindData(["about", "contact"]);
+    nav_template = nav_component.bindData(["about", "contact", "product"]);
   }
 
   // render to root element and to parent element (View)
@@ -61,9 +61,9 @@ var home_control = (function() {
   }
 
   // watch out orders of methods
-  function control(router) {
+  function control(router, params) {
     init();
-    getData();
+    getData(params);
     bindData();
     render();
     attachHandler(router);

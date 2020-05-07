@@ -1,39 +1,39 @@
 "use strict";
 
-/*about data
+/*product data
 {
-  title,
+  title,id
 }
 */
-import about_page from "../pages/about.js";
+import product_page from "../pages/product.js";
 
-var about_control = (function() {
-  var about_data;
-  var about_template;
+var product_control = (function() {
+  var product_data;
+  var product_template;
 
   function init() {
-    var about_data = null;
-    var about_template = "";
+    var product_data = null;
+    var product_template = "";
   }
 
   // fetch data from server, REST API, localStorage, URL parameters, URL querystring
   function getData(params) {
-    // about_data = fetch();
-    about_data = { title: "about page" };
+    // product_data = fetch();
+    product_data = { title: "product page", id: params.id };
   }
   function bindData() {
-    about_template = about_page.bindData(about_data);
+    product_template = product_page.bindData(product_data);
   }
 
   // render to root element and to parent element
   function render() {
     var root = document.getElementById("root");
-    root.innerHTML = about_template;
+    root.innerHTML = product_template;
   }
 
   // dictate all of handlers for page
   function attachHandler(router) {
-    console.log("aboutpage handler attached !");
+    console.log("productpage handler attached !");
   }
 
   // watch out orders of methods
@@ -49,4 +49,4 @@ var about_control = (function() {
   };
 })();
 
-export default about_control;
+export default product_control;

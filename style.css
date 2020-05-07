@@ -10,3 +10,6 @@ body {
   margin: 300px auto;
   /* border: 1px solid red; */
 }
+#list {
+  list-style: none;
+}
