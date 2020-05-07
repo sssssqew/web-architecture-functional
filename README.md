@@ -9,8 +9,8 @@ live-server
 
 # features
 
-MVC pattern
-Module pattern
-No Framework
-Single Page Application
+MVC pattern  
+Module pattern  
+No Framework  
+Single Page Application  
 Bundling without webpack
