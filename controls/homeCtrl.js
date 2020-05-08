@@ -19,7 +19,7 @@ var home = (function() {
     home_data = {
       title: "home page",
       list: ["apple", "banana", "orange"],
-      nav: ["about", "contact", "product"]
+      nav: ["about", "contact", "product", "notfound"]
     };
   }
   // set Data function needed

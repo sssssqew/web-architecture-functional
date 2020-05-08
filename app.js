@@ -51,7 +51,7 @@ var routes = {
     controls.product.control(router, params);
   },
   otherwise() {
-    console.log("page not found !");
+    controls.notfound.control();
   }
 };
 

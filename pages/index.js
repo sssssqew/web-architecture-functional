@@ -2,6 +2,7 @@ import home from "./home.js";
 import about from "./about.js";
 import contact from "./contact.js";
 import product from "./product.js";
+import notfound from "./notfound.js";
 
 var pages = (function() {
   "use strict";
@@ -10,7 +11,8 @@ var pages = (function() {
     home,
     about,
     contact,
-    product
+    product,
+    notfound
   };
 })();
 

@@ -2,6 +2,7 @@ import home from "./homeCtrl.js";
 import about from "./aboutCtrl.js";
 import contact from "./contactCtrl.js";
 import product from "./productCtrl.js";
+import notfound from "./notfoundCtrl.js";
 
 var controls = (function() {
   "use strict";
@@ -10,7 +11,8 @@ var controls = (function() {
     home,
     about,
     contact,
-    product
+    product,
+    notfound
   };
 })();
 
