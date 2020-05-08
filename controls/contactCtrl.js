@@ -1,42 +1,38 @@
-/*contact data
-{
-  title,
-}
-*/
-import contact_page from "../pages/contact.js";
+import pages from "../pages/index.js";
 import utils from "../lib/utils.js";
 
-var contact_control = (function() {
+var contact = (function() {
   "use strict";
 
   var contact_data;
-  var contact_template;
+  var template;
 
   function init() {
-    var contact_data = null;
-    var contact_template = "";
+    contact_data = null;
+    template = { contact: "" };
   }
 
-  // fetch data from server, REST API, localStorage, URL parameters, URL querystring
+  // fetch data from server, REST API, localStorage, URL parameters, URL querystring (Model)
   function getData(params) {
     // contact_data = fetch();
     contact_data = { title: "contact page" };
   }
+  // bind data to template (View)
   function bindData() {
-    contact_template = contact_page.bindData(contact_data);
+    template.contact = pages.contact.bindData(contact_data);
   }
 
-  // render to root element and to parent element
+  // render to root element and to parent element (View)
   function render() {
-    utils.updateDom("root", contact_template);
+    utils.updateDom("root", template.contact);
   }
 
-  // dictate all of handlers for page
+  // dictate all of handlers for page (Controller)
   function attachHandler(router) {
     console.log("contactpage handler attached !");
   }
 
-  // watch out orders of methods
+  // pay attention to orders of methods
   function control(router, params) {
     init();
     getData(params);
@@ -49,4 +45,4 @@ var contact_control = (function() {
   };
 })();
 
-export default contact_control;
+export default contact;

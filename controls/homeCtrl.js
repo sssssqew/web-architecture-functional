@@ -1,55 +1,50 @@
-/*home data
-{
-  title,
-  list
-}
-*/
-
-import home_page from "../pages/home.js";
-import item_component from "../components/item.js";
-import nav_component from "../components/nav.js";
+import pages from "../pages/index.js";
+import components from "../components/index.js";
 import utils from "../lib/utils.js";
 
-var home_control = (function() {
+var home = (function() {
   "use strict";
 
   var home_data;
-  var home_template;
-  var item_template;
-  var nav_template;
+  var template;
 
   function init() {
     home_data = null;
-    home_template = "";
-    item_template = "";
-    nav_template = "";
+    template = { home: "", item: "", nav: "" };
   }
 
   // fetch data from server, REST API, localStorage, URL parameters, URL querystring (Model)
   function getData(params) {
     // home_data = fetch();
-    home_data = { title: "home page", list: ["apple", "banana", "orange"] };
+    home_data = {
+      title: "home page",
+      list: ["apple", "banana", "orange"],
+      nav: ["about", "contact", "product"]
+    };
   }
   // set Data function needed
 
+  // bind data to template (View)
   function bindData() {
-    home_template = home_page.bindData(home_data);
+    template.home = pages.home.bindData(home_data);
+    template.nav = components.nav.bindData(home_data);
+
     home_data.list.forEach(function(fruit) {
-      item_template += item_component.bindData(fruit);
+      template.item += components.item.bindData(fruit);
     });
-    nav_template = nav_component.bindData(["about", "contact", "product"]);
   }
 
   // render to root element and to parent element (View)
   function render() {
-    utils.updateDom("root", home_template);
-    utils.updateDom("list", item_template);
-    utils.updateDom("nav", nav_template);
+    utils.updateDom("root", template.home);
+    utils.updateDom("list", template.item);
+    utils.updateDom("nav", template.nav);
   }
 
   // dictate all of handlers for page (Controller)
   function attachHandler(router) {
     console.log("homepage handler attached !");
+    console.log(nav, list, root); // 즉시실행함수라서 변수가 없음에도 불구하고 내부참조를 모두 기억하는듯
     nav.addEventListener("click", function(e) {
       router(e.target.dataset.url);
       window.history.pushState({}, "", e.target.dataset.url);
@@ -57,7 +52,7 @@ var home_control = (function() {
     });
   }
 
-  // watch out orders of methods
+  // pay attention to orders of methods
   function control(router, params) {
     init();
     getData(params);
@@ -70,4 +65,4 @@ var home_control = (function() {
   };
 })();
 
-export default home_control;
+export default home;

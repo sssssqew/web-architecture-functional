@@ -1,42 +1,38 @@
-/*product data
-{
-  title,id
-}
-*/
-import product_page from "../pages/product.js";
+import pages from "../pages/index.js";
 import utils from "../lib/utils.js";
 
-var product_control = (function() {
+var product = (function() {
   "use strict";
 
   var product_data;
-  var product_template;
+  var template;
 
   function init() {
-    var product_data = null;
-    var product_template = "";
+    product_data = null;
+    template = { product: "" };
   }
 
-  // fetch data from server, REST API, localStorage, URL parameters, URL querystring
+  // fetch data from server, REST API, localStorage, URL parameters, URL querystring (Model)
   function getData(params) {
     // product_data = fetch();
     product_data = { title: "product page", id: params.id };
   }
+  // bind data to template (View)
   function bindData() {
-    product_template = product_page.bindData(product_data);
+    template.product = pages.product.bindData(product_data);
   }
 
-  // render to root element and to parent element
+  // render to root element and to parent element (View)
   function render() {
-    utils.updateDom("root", product_template);
+    utils.updateDom("root", template.product);
   }
 
-  // dictate all of handlers for page
+  // dictate all of handlers for page (Controller)
   function attachHandler(router) {
     console.log("productpage handler attached !");
   }
 
-  // watch out orders of methods
+  // pay attention to orders of methods
   function control(router, params) {
     init();
     getData(params);
@@ -49,4 +45,4 @@ var product_control = (function() {
   };
 })();
 
-export default product_control;
+export default product;

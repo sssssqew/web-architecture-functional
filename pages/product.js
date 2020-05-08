@@ -1,4 +1,4 @@
-var product_page = (function() {
+var product = (function() {
   "use strict";
 
   var product_data = {
@@ -16,4 +16,4 @@ var product_page = (function() {
   };
 })();
 
-export default product_page;
+export default product;

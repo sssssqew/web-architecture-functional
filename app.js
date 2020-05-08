@@ -1,7 +1,4 @@
-import home_control from "./controls/homeCtrl.js";
-import about_control from "./controls/aboutCtrl.js";
-import contact_control from "./controls/contactCtrl.js";
-import product_control from "./controls/productCtrl.js";
+import controls from "./controls/index.js";
 
 // check if  path and one of routes match
 function isURLmatched(urlFragments, pathFragments, params) {
@@ -42,16 +39,16 @@ function router(path) {
 
 var routes = {
   "/": function(params) {
-    home_control.control(router, params);
+    controls.home.control(router, params);
   },
   "/about": function(params) {
-    about_control.control(router, params);
+    controls.about.control(router, params);
   },
   "/contact": function(params) {
-    contact_control.control(router, params);
+    controls.contact.control(router, params);
   },
   "/product/:id": function(params) {
-    product_control.control(router, params);
+    controls.product.control(router, params);
   },
   otherwise() {
     console.log("page not found !");

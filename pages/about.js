@@ -1,4 +1,4 @@
-var about_page = (function() {
+var about = (function() {
   "use strict";
 
   var about_data = {
@@ -14,4 +14,4 @@ var about_page = (function() {
   };
 })();
 
-export default about_page;
+export default about;

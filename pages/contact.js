@@ -1,4 +1,4 @@
-var contact_page = (function() {
+var contact = (function() {
   "use strict";
 
   var contact_data = {
@@ -14,4 +14,4 @@ var contact_page = (function() {
   };
 })();
 
-export default contact_page;
+export default contact;

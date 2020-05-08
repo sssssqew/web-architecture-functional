@@ -1,4 +1,4 @@
-var home_page = (function() {
+var home = (function() {
   "use strict";
 
   var home_data = {
@@ -16,4 +16,4 @@ var home_page = (function() {
   };
 })();
 
-export default home_page;
+export default home;

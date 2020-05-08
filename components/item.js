@@ -1,4 +1,4 @@
-var item_component = (function() {
+var item = (function() {
   "use strict";
 
   var item_data = {
@@ -14,4 +14,4 @@ var item_component = (function() {
   };
 })();
 
-export default item_component;
+export default item;

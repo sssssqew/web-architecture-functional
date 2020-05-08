@@ -1,20 +1,15 @@
-/*about data
-{
-  title,
-}
-*/
-import about_page from "../pages/about.js";
+import pages from "../pages/index.js";
 import utils from "../lib/utils.js";
 
-var about_control = (function() {
+var about = (function() {
   "use strict";
 
   var about_data;
-  var about_template;
+  var template;
 
   function init() {
-    var about_data = null;
-    var about_template = "";
+    about_data = null;
+    template = { about: "" };
   }
 
   // fetch data from server, REST API, localStorage, URL parameters, URL querystring
@@ -22,13 +17,14 @@ var about_control = (function() {
     // about_data = fetch();
     about_data = { title: "about page" };
   }
+  // bind data to template (View)
   function bindData() {
-    about_template = about_page.bindData(about_data);
+    template.about = pages.about.bindData(about_data);
   }
 
   // render to root element and to parent element
   function render() {
-    utils.updateDom("root", about_template);
+    utils.updateDom("root", template.about);
   }
 
   // dictate all of handlers for page
@@ -36,7 +32,7 @@ var about_control = (function() {
     console.log("aboutpage handler attached !");
   }
 
-  // watch out orders of methods
+  // pay attention to orders of methods
   function control(router, params) {
     init();
     getData(params);
@@ -49,4 +45,4 @@ var about_control = (function() {
   };
 })();
 
-export default about_control;
+export default about;

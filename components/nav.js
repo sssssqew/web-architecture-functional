@@ -1,4 +1,4 @@
-var nav_component = (function() {
+var nav = (function() {
   "use strict";
 
   var nav_data = {
@@ -6,7 +6,7 @@ var nav_component = (function() {
   };
 
   function bindData(data) {
-    nav_data.urls = data;
+    nav_data.urls = data.nav;
     return `<button data-url="/">home</button>
                 <button data-url="/${nav_data.urls[0]}">${nav_data.urls[0]}</button>
                 <button data-url="/${nav_data.urls[1]}">${nav_data.urls[1]}</button>
@@ -18,4 +18,4 @@ var nav_component = (function() {
   };
 })();
 
-export default nav_component;
+export default nav;
