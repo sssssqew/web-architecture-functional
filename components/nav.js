@@ -1,6 +1,6 @@
-"use strict";
-
 var nav_component = (function() {
+  "use strict";
+
   var nav_data = {
     urls: null
   };

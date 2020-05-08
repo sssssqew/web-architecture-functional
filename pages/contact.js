@@ -1,6 +1,6 @@
-"use strict";
-
 var contact_page = (function() {
+  "use strict";
+
   var contact_data = {
     title: ""
   };

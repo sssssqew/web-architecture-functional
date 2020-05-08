@@ -1,13 +1,14 @@
-"use strict";
-
 /*about data
 {
   title,
 }
 */
 import about_page from "../pages/about.js";
+import utils from "../lib/utils.js";
 
 var about_control = (function() {
+  "use strict";
+
   var about_data;
   var about_template;
 
@@ -27,8 +28,7 @@ var about_control = (function() {
 
   // render to root element and to parent element
   function render() {
-    var root = document.getElementById("root");
-    root.innerHTML = about_template;
+    utils.updateDom("root", about_template);
   }
 
   // dictate all of handlers for page

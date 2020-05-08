@@ -1,6 +1,6 @@
-"use strict";
-
 var about_page = (function() {
+  "use strict";
+
   var about_data = {
     title: ""
   };

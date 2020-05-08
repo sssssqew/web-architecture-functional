@@ -1,6 +1,6 @@
-"use strict";
-
 var item_component = (function() {
+  "use strict";
+
   var item_data = {
     name: ""
   };

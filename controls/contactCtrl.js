@@ -1,13 +1,14 @@
-"use strict";
-
 /*contact data
 {
   title,
 }
 */
 import contact_page from "../pages/contact.js";
+import utils from "../lib/utils.js";
 
 var contact_control = (function() {
+  "use strict";
+
   var contact_data;
   var contact_template;
 
@@ -27,8 +28,7 @@ var contact_control = (function() {
 
   // render to root element and to parent element
   function render() {
-    var root = document.getElementById("root");
-    root.innerHTML = contact_template;
+    utils.updateDom("root", contact_template);
   }
 
   // dictate all of handlers for page

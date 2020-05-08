@@ -1,5 +1,3 @@
-"use strict";
-
 /*home data
 {
   title,
@@ -10,8 +8,11 @@
 import home_page from "../pages/home.js";
 import item_component from "../components/item.js";
 import nav_component from "../components/nav.js";
+import utils from "../lib/utils.js";
 
 var home_control = (function() {
+  "use strict";
+
   var home_data;
   var home_template;
   var item_template;
@@ -41,14 +42,9 @@ var home_control = (function() {
 
   // render to root element and to parent element (View)
   function render() {
-    var root = document.getElementById("root");
-    root.innerHTML = home_template;
-
-    var list = document.getElementById("list");
-    list.innerHTML = item_template;
-
-    var nav = document.getElementById("nav");
-    nav.innerHTML = nav_template;
+    utils.updateDom("root", home_template);
+    utils.updateDom("list", item_template);
+    utils.updateDom("nav", nav_template);
   }
 
   // dictate all of handlers for page (Controller)
@@ -57,6 +53,7 @@ var home_control = (function() {
     nav.addEventListener("click", function(e) {
       router(e.target.dataset.url);
       window.history.pushState({}, "", e.target.dataset.url);
+      console.log(utils.generateUUID4());
     });
   }
 

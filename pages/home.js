@@ -1,6 +1,6 @@
-"use strict";
-
 var home_page = (function() {
+  "use strict";
+
   var home_data = {
     title: ""
   };

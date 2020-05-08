@@ -1,13 +1,14 @@
-"use strict";
-
 /*product data
 {
   title,id
 }
 */
 import product_page from "../pages/product.js";
+import utils from "../lib/utils.js";
 
 var product_control = (function() {
+  "use strict";
+
   var product_data;
   var product_template;
 
@@ -27,8 +28,7 @@ var product_control = (function() {
 
   // render to root element and to parent element
   function render() {
-    var root = document.getElementById("root");
-    root.innerHTML = product_template;
+    utils.updateDom("root", product_template);
   }
 
   // dictate all of handlers for page

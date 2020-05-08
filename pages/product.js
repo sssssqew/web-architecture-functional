@@ -1,6 +1,6 @@
-"use strict";
-
 var product_page = (function() {
+  "use strict";
+
   var product_data = {
     title: "",
     id: ""
