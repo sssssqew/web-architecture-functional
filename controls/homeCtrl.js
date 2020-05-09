@@ -2,6 +2,11 @@ import pages from "../pages/index.js";
 import components from "../components/index.js";
 import lib from "../lib/index.js";
 
+// router 모듈 함수형 프로그래밍 적용하기
+//  컨트롤러 좀 더 정리하기 (init 함수 필요한지 생각해보기 )
+// filter map 함수 사용하기
+// 데이터 유효성 검사하기
+//  에러 처리하기
 var home = (function() {
   "use strict";
 
@@ -65,13 +70,28 @@ var home = (function() {
     return dom;
   }
 
+  // function testDeepCopy() {
+  //   var target = {};
+  //   var source = {
+  //     name: "sylee",
+  //     age: 36,
+  //     fruit: {
+  //       name: "apple",
+  //       price: { dallar: "$ 30", krw: "32000 won" }
+  //     }
+  //   };
+  //   lib.utils.deepCopyObj(target, source);
+  //   return target;
+  // }
+
   // dictate all of handlers for page (Controller)
   function attachHandler(dom) {
     console.log("homepage handler attached !");
 
     dom.nav.addEventListener("click", function(e) {
       lib.router(e.target.dataset.url);
-      // console.log(utils.generateUUID4());
+      // console.log(testDeepCopy());
+      // console.log(lib.utils.generateUUID4());
     });
   }
 
