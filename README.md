@@ -13,5 +13,5 @@ Module pattern
 No Framework  
 Single Page Application  
 Bundling without webpack  
-Routing with simple function
+Routing with simple function  
 Functional programming
