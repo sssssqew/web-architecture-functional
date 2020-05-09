@@ -7,7 +7,7 @@ var product = (function() {
   };
   function bindData(data) {
     product_data.title = data.title;
-    product_data.id = data.id;
+    product_data.id = data.params.id;
     return `<div>${product_data.title} (${product_data.id})
                 </div>`;
   }

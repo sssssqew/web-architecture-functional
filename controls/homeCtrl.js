@@ -1,80 +1,85 @@
 import pages from "../pages/index.js";
 import components from "../components/index.js";
-import utils from "../lib/utils.js";
+import lib from "../lib/index.js";
 
 var home = (function() {
   "use strict";
 
+  // 필요없을지도 모른다
+  // params를 곧바로 getData 메서드에 주입할 수도 있다
   function init(params) {
-    var obj = {};
-    obj.data = null;
-    obj.template = { home: "", item: "", nav: "" };
-    obj.params = params;
-    return obj;
+    var data = { params };
+    return data;
   }
 
   // fetch data from server, REST API, localStorage, URL parameters, URL querystring (Model)
-  function getData(obj) {
+  function getData(initData) {
     // home_data = fetch();
-    var newObj = Object.create(obj); // Object 상속
-    newObj.data = {
+
+    var data = {
+      params: initData.params,
       title: "home page",
       list: ["apple", "banana", "orange"],
       nav: ["about", "contact", "product", "notfound"]
     };
-    return newObj;
+    return data;
   }
   // set Data function needed
 
   // bind data to template (View)
-  function bindDataAll(newObj) {
-    var brandNewObj = Object.create(newObj); // Object 상속
+  function bindDataAll(data) {
+    var template = {};
+    var home = pages.home.bindData(data);
+    var nav = components.nav.bindData(data);
+    var item = "";
 
-    brandNewObj.template.home = pages.home.bindData(newObj.data);
-    brandNewObj.template.nav = components.nav.bindData(newObj.data);
-
-    newObj.data.list.forEach(function(fruit) {
-      brandNewObj.template.item += components.item.bindData(fruit);
+    data.list.forEach(function(fruit) {
+      item += components.item.bindData(fruit);
     });
+    template = { home, nav, item };
 
-    return brandNewObj;
+    return template;
   }
 
-  //  dom 요소의 id값을 변수로 가져오면 dom 객체를 얻을수 있음
-  // dom 요소의 id값을 변수로 가져오면 window 객체의 프로퍼티에 추가됨
-  // 만약 id 값이 history라서 history 객체를 가져오려고 한다면 이미 window 객체에
-  // history 프로퍼티가 있어서 객체를 가져오지 못하므로 getElementById 등의 메서드를 사용하는게 맞음
+  //  lib 에 함수를 따로 뺄수도 있다
+  function renderToPage(array) {
+    var dom = {};
+    array.forEach(function(obj) {
+      var d = lib.utils.getDom(obj.id);
+      d.innerHTML = obj.tem;
+      dom[obj.id] = d;
+    });
+    return dom;
+  }
+
   // render to root element and to parent element (View)
-  function render(brandNewObj) {
-    var newnewObj = Object.create(brandNewObj);
-    var root = utils.getDom("root");
-    root.innerHTML = brandNewObj.template.home;
-    var item = utils.getDom("list");
-    item.innerHTML = brandNewObj.template.item;
-    var nav = utils.getDom("nav");
-    nav.innerHTML = brandNewObj.template.nav;
-    var elements = { root, item, nav };
-    newnewObj.elements = elements;
-    return newnewObj;
+  function render(template) {
+    var dom = {};
+    var domIDs = [
+      { id: "root", tem: template.home },
+      { id: "list", tem: template.item },
+      { id: "nav", tem: template.nav }
+    ]; // root must be the first
+    dom = renderToPage(domIDs);
+
+    return dom;
   }
 
   // dictate all of handlers for page (Controller)
-  function attachHandler(router, newnewObj) {
+  function attachHandler(dom) {
     console.log("homepage handler attached !");
 
-    newnewObj.elements.nav.addEventListener("click", function(e) {
-      router(e.target.dataset.url);
+    dom.nav.addEventListener("click", function(e) {
+      lib.router(e.target.dataset.url);
       // console.log(utils.generateUUID4());
     });
   }
 
   // pay attention to orders of methods
-  function control(router, params) {
-    var obj = init(params);
-    var newObj = getData(obj);
-    var brandNewObj = bindDataAll(newObj);
-    var newnewObj = render(brandNewObj);
-    attachHandler(router, newnewObj);
+  function control(params) {
+    var fns = [init, getData, bindDataAll, render, attachHandler];
+    var composedFunc = lib.utils.compose(fns);
+    composedFunc(params);
   }
   return {
     control
