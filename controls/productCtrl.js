@@ -18,7 +18,7 @@ var product = (function() {
     product_data = { title: "product page", id: params.id };
   }
   // bind data to template (View)
-  function bindData() {
+  function bindDataAll() {
     template.product = pages.product.bindData(product_data);
   }
 
@@ -36,7 +36,7 @@ var product = (function() {
   function control(router, params) {
     init();
     getData(params);
-    bindData();
+    bindDataAll();
     render();
     attachHandler(router);
   }

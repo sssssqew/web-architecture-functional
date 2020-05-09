@@ -18,7 +18,7 @@ var about = (function() {
     about_data = { title: "about page" };
   }
   // bind data to template (View)
-  function bindData() {
+  function bindDataAll() {
     template.about = pages.about.bindData(about_data);
   }
 
@@ -36,7 +36,7 @@ var about = (function() {
   function control(router, params) {
     init();
     getData(params);
-    bindData();
+    bindDataAll();
     render();
     attachHandler(router);
   }

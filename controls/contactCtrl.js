@@ -18,7 +18,7 @@ var contact = (function() {
     contact_data = { title: "contact page" };
   }
   // bind data to template (View)
-  function bindData() {
+  function bindDataAll() {
     template.contact = pages.contact.bindData(contact_data);
   }
 
@@ -36,7 +36,7 @@ var contact = (function() {
   function control(router, params) {
     init();
     getData(params);
-    bindData();
+    bindDataAll();
     render();
     attachHandler(router);
   }

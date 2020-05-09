@@ -18,7 +18,7 @@ var notfound = (function() {
     notfound_data = { title: "notfound page" };
   }
   // bind data to template (View)
-  function bindData() {
+  function bindDataAll() {
     template.notfound = pages.notfound.bindData(notfound_data);
   }
 
@@ -36,7 +36,7 @@ var notfound = (function() {
   function control(router, params) {
     init();
     getData(params);
-    bindData();
+    bindDataAll();
     render();
     attachHandler(router);
   }

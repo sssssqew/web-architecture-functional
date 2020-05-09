@@ -25,7 +25,7 @@ var home = (function() {
   // set Data function needed
 
   // bind data to template (View)
-  function bindData() {
+  function bindDataAll() {
     template.home = pages.home.bindData(home_data);
     template.nav = components.nav.bindData(home_data);
 
@@ -34,6 +34,10 @@ var home = (function() {
     });
   }
 
+  //  dom 요소의 id값을 변수로 가져오면 dom 객체를 얻을수 있음
+  // dom 요소의 id값을 변수로 가져오면 window 객체의 프로퍼티에 추가됨
+  // 만약 id 값이 history라서 history 객체를 가져오려고 한다면 이미 window 객체에
+  // history 프로퍼티가 있어서 객체를 가져오지 못하므로 getElementById 등의 메서드를 사용하는게 맞음
   // render to root element and to parent element (View)
   function render() {
     utils.updateDom("root", template.home);
@@ -45,7 +49,7 @@ var home = (function() {
   function attachHandler(router) {
     console.log("homepage handler attached !");
 
-    components.nav.addEventListener("click", function(e) {
+    nav.addEventListener("click", function(e) {
       router(e.target.dataset.url);
       // console.log(utils.generateUUID4());
     });
@@ -55,7 +59,7 @@ var home = (function() {
   function control(router, params) {
     init();
     getData(params);
-    bindData();
+    bindDataAll();
     render();
     attachHandler(router);
   }
