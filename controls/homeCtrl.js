@@ -44,8 +44,8 @@ var home = (function() {
   // dictate all of handlers for page (Controller)
   function attachHandler(router) {
     console.log("homepage handler attached !");
-    // console.log(nav, list, root); // 즉시실행함수라서 변수가 없음에도 불구하고 내부참조를 모두 기억하는듯
-    nav.addEventListener("click", function(e) {
+
+    components.nav.addEventListener("click", function(e) {
       router(e.target.dataset.url);
       // console.log(utils.generateUUID4());
     });
