@@ -1,16 +1,21 @@
+import lib from "../lib/index.js";
+
 var notfound = (function() {
   "use strict";
 
   var notfound_data = {
-    title: ""
+    title: "notfound page"
   };
-  function bindData(data) {
-    notfound_data.title = data.title;
+  function getTemplate() {
     return `<div>${notfound_data.title} 
                 </div>`;
   }
+  function updateData(updateObj) {
+    lib.utils.updateObj(notfound_data, updateObj);
+  }
   return {
-    bindData
+    getTemplate,
+    updateData
   };
 })();
 

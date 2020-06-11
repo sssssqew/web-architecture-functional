@@ -1,18 +1,22 @@
+import lib from "../lib/index.js";
+
 var product = (function() {
   "use strict";
 
   var product_data = {
-    title: "",
+    title: "product page",
     id: ""
   };
-  function bindData(data) {
-    product_data.title = data.title;
-    product_data.id = data.params.id;
+  function getTemplate() {
     return `<div>${product_data.title} (${product_data.id})
                 </div>`;
   }
+  function updateData(updateObj) {
+    lib.utils.updateObj(product_data, updateObj);
+  }
   return {
-    bindData
+    getTemplate,
+    updateData
   };
 })();
 

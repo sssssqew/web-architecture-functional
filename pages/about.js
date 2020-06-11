@@ -1,16 +1,21 @@
+import lib from "../lib/index.js";
+
 var about = (function() {
   "use strict";
 
   var about_data = {
-    title: ""
+    title: "about page"
   };
-  function bindData(data) {
-    about_data.title = data.title;
+  function getTemplate() {
     return `<div>${about_data.title} 
                 </div>`;
   }
+  function updateData(updateObj) {
+    lib.utils.updateObj(about_data, updateObj);
+  }
   return {
-    bindData
+    getTemplate,
+    updateData
   };
 })();
 

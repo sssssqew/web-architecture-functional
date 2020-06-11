@@ -1,16 +1,21 @@
+import lib from "../lib/index.js";
+
 var contact = (function() {
   "use strict";
 
   var contact_data = {
-    title: ""
+    title: "contact page"
   };
-  function bindData(data) {
-    contact_data.title = data.title;
+  function getTemplate() {
     return `<div>${contact_data.title} 
                 </div>`;
   }
+  function updateData(updateObj) {
+    lib.utils.updateObj(contact_data, updateObj);
+  }
   return {
-    bindData
+    getTemplate,
+    updateData
   };
 })();
 

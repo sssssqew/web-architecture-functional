@@ -14,18 +14,15 @@ var product = (function() {
   function getData(initData) {
     // home_data = fetch();
 
-    var data = {
-      params: initData.params,
-      title: "product page"
-    };
-    return data;
+    return initData;
   }
   // set Data function needed
 
   // bind data to template (View)
   function bindDataAll(data) {
     var template = {};
-    var product = pages.product.bindData(data);
+    pages.product.updateData({ id: data.params.id });
+    var product = pages.product.getTemplate();
 
     template = { product };
 

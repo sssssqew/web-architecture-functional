@@ -14,18 +14,14 @@ var notfound = (function() {
   function getData(initData) {
     // home_data = fetch();
 
-    var data = {
-      params: initData.params,
-      title: "notfound page"
-    };
-    return data;
+    return initData;
   }
   // set Data function needed
 
   // bind data to template (View)
   function bindDataAll(data) {
     var template = {};
-    var notfound = pages.notfound.bindData(data);
+    var notfound = pages.notfound.getTemplate();
 
     template = { notfound };
 

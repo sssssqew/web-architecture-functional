@@ -14,18 +14,14 @@ var about = (function() {
   function getData(initData) {
     // home_data = fetch();
 
-    var data = {
-      params: initData.params,
-      title: "about page"
-    };
-    return data;
+    return initData;
   }
   // set Data function needed
 
   // bind data to template (View)
   function bindDataAll(data) {
     var template = {};
-    var about = pages.about.bindData(data);
+    var about = pages.about.getTemplate();
 
     template = { about };
 

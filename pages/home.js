@@ -1,18 +1,23 @@
+import lib from "../lib/index.js";
+
 var home = (function() {
   "use strict";
 
   var home_data = {
-    title: ""
+    title: "home page"
   };
-  function bindData(data) {
-    home_data.title = data.title;
+  function getTemplate() {
     return `<div>${home_data.title} 
                   <ul id="list"></ul>
                   <div id="nav"></div>
                 </div>`;
   }
+  function updateData(updateObj) {
+    lib.utils.updateObj(home_data, updateObj);
+  }
   return {
-    bindData
+    getTemplate,
+    updateData
   };
 })();
 

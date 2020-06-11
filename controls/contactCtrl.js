@@ -14,18 +14,14 @@ var contact = (function() {
   function getData(initData) {
     // home_data = fetch();
 
-    var data = {
-      params: initData.params,
-      title: "contact page"
-    };
-    return data;
+    return initData;
   }
   // set Data function needed
 
   // bind data to template (View)
   function bindDataAll(data) {
     var template = {};
-    var contact = pages.contact.bindData(data);
+    var contact = pages.contact.getTemplate();
 
     template = { contact };
 
