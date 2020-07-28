@@ -6,7 +6,7 @@ window.routes = {
   "/": function(params) {
     controls.home.control(params);
   },
-  "/about": function(params) {
+  "/about/:id": function(params) {
     controls.about.control(params);
   },
   "/contact": function(params) {

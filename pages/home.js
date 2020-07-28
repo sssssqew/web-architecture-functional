@@ -8,8 +8,8 @@ var home = (function() {
   };
   function getTemplate() {
     return `<div>${home_data.title} 
-                  <ul id="list"></ul>
                   <div id="nav"></div>
+                  <ul id="list" style="display:flex; flex-wrap: wrap; justify-content: space-evenly;"></ul>         
                 </div>`;
   }
   function updateData(updateObj) {

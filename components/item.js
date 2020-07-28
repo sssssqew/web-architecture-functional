@@ -8,12 +8,19 @@ var item = function() {
   "use strict";
 
   var item_data = {
+    id: 0,
     title: "item",
-    rating: "0"
+    rating: "0",
+    cover: "../resources/default-movie.png"
   };
 
+  //  아이템을 클릭했을때 image를 클릭하느냐 li 배경을 클릭하느냐 title을 클릭하느냐에 따라 e.target이 달라져서 그냥 모든 요소에 같은 id값을 삽입했음
   function getTemplate() {
-    return `<li>${item_data.title} (${item_data.rating})</li>`;
+    return `<li id=${item_data.id} style="border-radius: 15px; padding-top:30px; max-width:230px; margin:30px;display: inline-block;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); cursor:pointer; " onmouseover="this.style.opacity='0.7'"  onmouseout="this.style.opacity='1'">   
+                  <img id=${item_data.id} src="${item_data.cover}" style="width:230px; height:345px;"/>
+                  <h5 id=${item_data.id}>${item_data.title} (${item_data.rating})</h5>  
+                </li>`;
   }
 
   // not functional => change obj inside function
