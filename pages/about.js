@@ -7,7 +7,8 @@ var about = (function() {
     title: "about page"
   };
   function getTemplate() {
-    return `<div>${about_data.title} 
+    return `<div >
+                  <div id="detail" ></div>
                 </div>`;
   }
   function updateData(updateObj) {

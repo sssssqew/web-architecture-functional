@@ -4,11 +4,14 @@ body {
   padding: 0;
   font-family: sans-serif;
   text-align: center;
+  height: 100vh;
 }
 #root {
-  display: inline-block;
-  margin: 300px auto;
-  /* border: 1px solid red; */
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  padding: 20px;
+  /* border: 7px solid black; */
 }
 #list {
   list-style: none;

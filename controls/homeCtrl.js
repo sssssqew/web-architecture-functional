@@ -46,6 +46,9 @@ var home = (function() {
 
         var movies = sdata.data.movies; // 지역변수나 로컬스토리지에 저장한 다음 핸들러에서 블러와서 사용하자
         home_control_data.movies = movies;
+
+        // 서로 다른 페이지에서 movies 데이터를 공유하기 위하여 로컬스토리지에 저장함
+        localStorage.setItem("movies", JSON.stringify(movies));
         var items = movies.map(function(movie) {
           var item = components.item();
           item.updateData({
@@ -93,7 +96,7 @@ var home = (function() {
 
   // bind data to template (View)
   function getTemplateAll(data) {
-    console.log(data);
+    // console.log(data);
     var template = {};
     var home = pages.home.getTemplate();
     var nav = components.nav.getTemplate();

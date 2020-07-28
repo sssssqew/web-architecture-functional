@@ -19,7 +19,7 @@ var notfound = (function() {
   // set Data function needed
 
   // bind data to template (View)
-  function bindDataAll(data) {
+  function getTemplateAll(data) {
     var template = {};
     var notfound = pages.notfound.getTemplate();
 
@@ -47,13 +47,13 @@ var notfound = (function() {
   // pay attention to orders of methods
   // 스코프 체인에 의해 attachHandler 메서드는 외부에서 router를 찾음
   function control(params) {
-    var fns = [init, getData, bindDataAll, render, attachHandler];
+    var fns = [init, getData, getTemplateAll, render, attachHandler];
     var composedFunc = lib.utils.compose(fns);
     composedFunc(params);
 
     // var initData = init(params);
     // var data = getData(initData);
-    // var template = bindDataAll(data);
+    // var template = getTemplateAll(data);
     // var dom = render(template);
     // attachHandler(dom);
   }
