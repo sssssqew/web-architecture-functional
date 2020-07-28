@@ -36,7 +36,9 @@ var about = (function() {
         rating: clicked_movie[0].rating,
         cover: clicked_movie[0].large_cover_image,
         summary: clicked_movie[0].summary,
-        genres: clicked_movie[0].genres.join(" #"),
+        genres: clicked_movie[0].genres
+          ? clicked_movie[0].genres.join(" #")
+          : "",
         trailer: clicked_movie[0].yt_trailer_code,
         torrentUrl: clicked_movie[0].torrents[1]
           ? clicked_movie[0].torrents[1].url

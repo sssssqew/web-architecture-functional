@@ -26,12 +26,14 @@ var home = (function() {
 
   // fetch data from server, REST API, localStorage, URL parameters, URL querystring (Model)
   function getData(initData) {
+    var numOfMovies = 50;
     // var proxy =
     //   "http://ec2-13-125-247-196.ap-northeast-2.compute.amazonaws.com:8081/"; // 포트포워딩 설정
     var proxy = "http://localhost:8081/"; // 포트포워딩 설정
     // var proxy = "http://121.150.100.193:8080/";
     var BASE_URL = "https://yts.lt/api/v2/";
-    var LIST_MOVIES_URL = `${proxy + BASE_URL}list_movies.json`;
+    var LIST_MOVIES_URL = `${proxy +
+      BASE_URL}list_movies.json?limit=${numOfMovies}`;
     console.log(LIST_MOVIES_URL);
 
     // var server_data = await lib.server.transfer(LIST_MOVIES_URL);
