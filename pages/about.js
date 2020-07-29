@@ -7,7 +7,7 @@ var about = (function() {
     title: "about page"
   };
   function getTemplate() {
-    return `<div >
+    return `<div>
                   <div id="detail" ></div>
                 </div>`;
   }

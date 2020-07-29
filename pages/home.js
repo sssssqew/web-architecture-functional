@@ -9,7 +9,7 @@ var home = (function() {
   function getTemplate() {
     return `<div>
                   <div id="nav"></div>
-                  <ul id="list" style="display:flex; flex-wrap: wrap; justify-content: space-evenly;"></ul>         
+                  <ul id="list" class="home-list"></ul>         
                 </div>`;
   }
   function updateData(updateObj) {
