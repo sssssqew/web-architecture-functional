@@ -23,39 +23,35 @@ var detail = (function() {
   //  home 으로 되돌아갈때 뒤로가기 버튼을 누르면 popState 되면서 여전히 이전에 데이티가 저장되어 있지만
   // home 버튼을 누르면 새로고침 하는거라서 클로저에 저장된 데이터가 지워져서 /about 페이지 버튼을 누르면 초기값으로 렌더링된다
   function getTemplate() {
-    return `<div id=${
-      detail_data.id
-    } style="width: 80%; margin: 20px auto; display: inline-block; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); ">
-                  <div style="display:flex;">
+    return `<div id=${detail_data.id} class="detail-card">
+                  <div class="detail-main">
                     <div>
-                      <img src="${
-                        detail_data.cover
-                      }" style="width: 500px; height: 750px;"/>
-                      <h4 style="margin:0; padding: 10px;">${
-                        detail_data.title
-                      } (${detail_data.rating}) </h4>
+                      <img src="${detail_data.cover}" class="detail-cover"/>
+                      <h4 class="detail-title">${detail_data.title} (${
+      detail_data.rating
+    }) </h4>
                       
                        <a href=${
                          detail_data.trailer
                            ? `https://www.youtube.com/watch?v=${detail_data.trailer}`
                            : ""
-                       } target="_blank" style="text-decoration: none; color: orange;" onmouseover="this.style.fontSize='1.2rem'" onmouseout="this.style.fontSize='1rem';">${
+                       } target="_blank" class="detail-trailer">${
       detail_data.trailer ? "Click to see trailer" : "No trailer"
     }</a>
                     </div>
 
-                    <div style="text-align: left; padding: 20px; width: 700px; text-align: justify; border-left: 1px solid grey; opacity: 0.7;">
+                    <div class="detail-summary">
                       ${detail_data.summary} <br/>
+                      <a href="/" class="detail-home"> ◀️ Home</a>
                       <a href=${
                         detail_data.torrentUrl ? detail_data.torrentUrl : ""
-                      } style="float: right;">${
+                      } class="detail-torrent">${
       detail_data.torrentUrl ? " ☺️ Click to download torrent" : "No Torrent :("
     }</a>
-                      <a href="/" style="float:left; margin-right: 30px;"> ◀️ Home</a>
                     </div>
                   </div>
 
-                  <div style="border-top: 1px solid grey; padding: 10px; opacity: 0.7">
+                  <div class="detail-genres">
                     #${detail_data.genres}
                   </div>
                 </div>`;

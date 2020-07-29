@@ -1,3 +1,6 @@
+@import url("css/components/item.css");
+@import url("css/components/detail.css");
+
 html,
 body {
   margin: 0;

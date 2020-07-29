@@ -1,0 +1,47 @@
+.detail-card {
+  display: inline-block;
+  width: 80%;
+  margin: 20px auto;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+.detail-main {
+  display: flex;
+}
+.detail-cover {
+  width: 500px;
+  height: 750px;
+}
+.detail-title {
+  margin: 0;
+  padding: 10px;
+}
+.detail-trailer {
+  text-decoration: none;
+  color: orange;
+}
+.detail-trailer:hover {
+  font-size: 1.2rem;
+}
+.detail-summary {
+  width: 700px;
+  padding: 20px;
+  text-align: justify;
+  border-left: 1px solid grey;
+  opacity: 0.7;
+}
+.detail-home {
+  float: left;
+  margin-right: 30px;
+}
+.detail-torrent {
+  float: right;
+}
+.detail-home:hover,
+.detail-torrent:hover {
+  color: orange;
+}
+.detail-genres {
+  padding: 10px;
+  border-top: 1px solid grey;
+  opacity: 0.7;
+}
