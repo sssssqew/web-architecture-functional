@@ -22,6 +22,7 @@ var detail = (function() {
   //  css 는 폴더 하나 만들고 컴포넌트마다 css 분리해서 관리하고 인라인 스타일 대신 class 선언해서 스타일링하기
   //  home 으로 되돌아갈때 뒤로가기 버튼을 누르면 popState 되면서 여전히 이전에 데이티가 저장되어 있지만
   // home 버튼을 누르면 새로고침 하는거라서 클로저에 저장된 데이터가 지워져서 /about 페이지 버튼을 누르면 초기값으로 렌더링된다
+  // 추후 home 버튼은 클릭시 window state pop 해서 이전 주소로 돌아가도록 하자
   function getTemplate() {
     return `<div id=${detail_data.id} class="detail-card">
                   <div class="detail-main">
