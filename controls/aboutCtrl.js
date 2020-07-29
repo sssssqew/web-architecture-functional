@@ -21,14 +21,9 @@ var about = (function() {
     if (initData.params.id) {
       var movies = JSON.parse(localStorage.getItem("movies"));
 
-      // console.log("clicked movie id:", initData.params.id);
-      // console.log("movies: ", movies);
-
       var clicked_movie = movies.filter(function(movie) {
         return movie.id === parseInt(initData.params.id);
       });
-
-      // console.log(clicked_movie[0].genres.join("#"));
 
       components.detail.updateData({
         id: clicked_movie[0].id,
@@ -52,7 +47,6 @@ var about = (function() {
 
   // bind data to template (View)
   function getTemplateAll(data) {
-    // console.log(data);
     var template = {};
     var about = pages.about.getTemplate();
     var detail = components.detail.getTemplate();
