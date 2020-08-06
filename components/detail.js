@@ -32,11 +32,11 @@ var detail = (function() {
       detail_data.rating
     }) </h4>
                       
-                       <a href=${
+                       <a href="${
                          detail_data.trailer
                            ? `https://www.youtube.com/watch?v=${detail_data.trailer}`
                            : ""
-                       } target="_blank" class="detail-trailer">${
+                       }" target="_blank" class="detail-trailer">${
       detail_data.trailer ? "Click to see trailer" : "No trailer"
     }</a>
                     </div>
@@ -44,9 +44,9 @@ var detail = (function() {
                     <div class="detail-summary">
                       ${detail_data.summary} <br/>
                       <a href="/" class="detail-home"> ◀️ Home</a>
-                      <a href=${
+                      <a href="${
                         detail_data.torrentUrl ? detail_data.torrentUrl : ""
-                      } class="detail-torrent">${
+                      }" class="detail-torrent">${
       detail_data.torrentUrl ? " ☺️ Click to download torrent" : "No Torrent :("
     }</a>
                     </div>
