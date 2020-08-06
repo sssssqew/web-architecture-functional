@@ -11,7 +11,7 @@ var contact = (function() {
                 </div>`;
   }
   function updateData(updateObj) {
-    lib.utils.updateObj(contact_data, updateObj);
+    lib.dom.updateObj(contact_data, updateObj);
   }
   return {
     getTemplate,

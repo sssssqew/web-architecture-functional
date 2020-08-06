@@ -13,7 +13,7 @@ var home = (function() {
                 </div>`;
   }
   function updateData(updateObj) {
-    lib.utils.updateObj(home_data, updateObj);
+    lib.dom.updateObj(home_data, updateObj);
   }
   return {
     getTemplate,

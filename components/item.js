@@ -24,7 +24,7 @@ var item = function() {
 
   // not functional => change obj inside function
   function updateData(updateObj) {
-    lib.utils.updateObj(item_data, updateObj);
+    lib.dom.updateObj(item_data, updateObj);
   }
   return {
     getTemplate,

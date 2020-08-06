@@ -12,7 +12,7 @@ var product = (function() {
                 </div>`;
   }
   function updateData(updateObj) {
-    lib.utils.updateObj(product_data, updateObj);
+    lib.dom.updateObj(product_data, updateObj);
   }
   return {
     getTemplate,

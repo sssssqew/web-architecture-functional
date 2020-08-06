@@ -11,7 +11,7 @@ var notfound = (function() {
                 </div>`;
   }
   function updateData(updateObj) {
-    lib.utils.updateObj(notfound_data, updateObj);
+    lib.dom.updateObj(notfound_data, updateObj);
   }
   return {
     getTemplate,

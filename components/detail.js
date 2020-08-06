@@ -60,7 +60,7 @@ var detail = (function() {
 
   // not functional => change obj inside function
   function updateData(updateObj) {
-    lib.utils.updateObj(detail_data, updateObj);
+    lib.dom.updateObj(detail_data, updateObj);
   }
   return {
     getTemplate,

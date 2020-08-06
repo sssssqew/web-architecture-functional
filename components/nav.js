@@ -16,7 +16,7 @@ var nav = (function() {
               `;
   }
   function updateData(updateObj) {
-    lib.utils.updateObj(nav_data, updateObj);
+    lib.dom.updateObj(nav_data, updateObj);
   }
   return {
     getTemplate,
