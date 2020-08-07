@@ -11,6 +11,8 @@ var detail = (function() {
     id: 0,
     title: "detail",
     rating: "0",
+    year: 0,
+    runtime: 0,
     cover: "../resources/default-movie.png",
     summary: "",
     genres: "",
@@ -30,7 +32,7 @@ var detail = (function() {
                       <img src="${detail_data.cover}" class="detail-cover"/>
                       <h4 class="detail-title">${detail_data.title} (${
       detail_data.rating
-    }) </h4>
+    }) (${detail_data.year}) (${detail_data.runtime} min.)</h4>
                       
                        <a href="${
                          detail_data.trailer

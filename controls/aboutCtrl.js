@@ -28,6 +28,8 @@ var about = (function() {
         id: clicked_movie[0].id,
         title: clicked_movie[0].title,
         rating: clicked_movie[0].rating,
+        year: clicked_movie[0].year,
+        runtime: clicked_movie[0].runtime,
         cover: clicked_movie[0].large_cover_image,
         summary: clicked_movie[0].summary,
         genres: clicked_movie[0].genres
