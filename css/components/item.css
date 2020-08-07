@@ -14,3 +14,6 @@
   width: 230px;
   height: 345px;
 }
+.item-cover:hover {
+  transform: scale(1.05);
+}
