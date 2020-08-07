@@ -60,6 +60,7 @@ var home = (function() {
           return item;
         });
 
+        home_data.items = items; // 추후 아이템 각각의 데이터 변경과 검색을 위하여 home_data에 저장하고 이벤트가 일어난 경우 사용함
         lib.dom.render("list", itemTemplates);
 
         // 컴포넌트만 업데이트할 거면 컴포넌트 데이터 교체하고 템플릿 가져온 다음 페이지 특정 위치에 삽입해주면 됨
@@ -78,7 +79,8 @@ var home = (function() {
     var doms = {};
     doms["root"] = lib.dom.render("root", pages.home.getTemplate()); // root must be the first
     doms["nav"] = lib.dom.render("nav", components.nav.getTemplate());
-    doms["list"] = lib.dom.render("list", "Loading ...");
+    doms["search"] = lib.dom.render("search", components.search.getTemplate());
+    doms["list"] = lib.dom.render("list", components.loading.getTemplate());
     return doms;
   }
 
@@ -89,6 +91,35 @@ var home = (function() {
     doms.nav.addEventListener("click", function(e) {
       lib.router(e.target.dataset.url);
     });
+
+    //  영화 검색기능 구현
+    doms.search.addEventListener("keyup", function(e) {
+      components.search.updateData({ inputString: e.target.value });
+      console.log(components.search.getData());
+
+      // ENTER 키 누르면 검색시작
+      if (e.keyCode === 13) {
+        var searchedMovies = home_data.items.filter(function(item) {
+          var movieTitle = item.getData().title.toLowerCase();
+          var searchTitle = components.search
+            .getData()
+            .inputString.toLowerCase();
+          return movieTitle.includes(searchTitle);
+        });
+        components.search.updateData({ inputString: "" });
+
+        console.log(components.search.getData().inputString);
+
+        // 검색된 영화로만 새로운 리스트를 만들어 업데이트함
+        var itemTemplates = "";
+        searchedMovies.forEach(function(searchedMovie) {
+          console.log(searchedMovie.getData().title);
+          itemTemplates += searchedMovie.getTemplate();
+        });
+        lib.dom.render("list", itemTemplates);
+      }
+    });
+
     //  이벤트 위임을 사용하여 ul 요소에만 핸들러를 붙여줌
     doms.list.addEventListener("click", function(e) {
       console.log("list clicked !");

@@ -18,9 +18,13 @@ var nav = (function() {
   function updateData(updateObj) {
     lib.dom.updateObj(nav_data, updateObj);
   }
+  function getData() {
+    return nav_data;
+  }
   return {
     getTemplate,
-    updateData
+    updateData,
+    getData
   };
 })();
 

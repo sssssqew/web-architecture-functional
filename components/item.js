@@ -26,9 +26,13 @@ var item = function() {
   function updateData(updateObj) {
     lib.dom.updateObj(item_data, updateObj);
   }
+  function getData() {
+    return item_data;
+  }
   return {
     getTemplate,
-    updateData
+    updateData,
+    getData
   };
 };
 

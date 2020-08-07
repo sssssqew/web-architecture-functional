@@ -62,9 +62,13 @@ var detail = (function() {
   function updateData(updateObj) {
     lib.dom.updateObj(detail_data, updateObj);
   }
+  function getData() {
+    return detail_data;
+  }
   return {
     getTemplate,
-    updateData
+    updateData,
+    getData
   };
 })();
 
