@@ -4,15 +4,19 @@ var nav = (function() {
   "use strict";
 
   var nav_data = {
-    urls: ["about", "contact", "product", "notfound"]
+    home: "/",
+    about: "/about",
+    contact: "/contact",
+    product: "/product/9?name=computer&price=$30",
+    notfound: "/notfound"
   };
 
   function getTemplate() {
-    return `<button data-url="/">home</button>
-                <button data-url="/${nav_data.urls[0]}">${nav_data.urls[0]}</button>
-                <button data-url="/${nav_data.urls[1]}">${nav_data.urls[1]}</button>
-                <button data-url="/${nav_data.urls[2]}/9?name=computer&price=$30">${nav_data.urls[2]}</button>
-                <button data-url="/${nav_data.urls[3]}">${nav_data.urls[3]}</button>
+    return `<button class="nav-btn" data-url=${nav_data.home}>home</button>
+                <button class="nav-btn" data-url=${nav_data.about}>about</button>
+                <button class="nav-btn" data-url=${nav_data.contact}>contact</button>
+                <button class="nav-btn" data-url=${nav_data.product}>product</button>
+                <button class="nav-btn" data-url=${nav_data.notfound}>notfound</button>
               `;
   }
   function updateData(updateObj) {

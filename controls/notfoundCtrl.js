@@ -16,27 +16,12 @@ var notfound = (function() {
 
     return initData;
   }
-  // set Data function needed
-
-  // bind data to template (View)
-  function getTemplateAll(data) {
-    var template = {};
-    var notfound = pages.notfound.getTemplate();
-
-    template = { notfound };
-
-    return template;
-  }
 
   // render to root element and to parent element (View)
-  function render(template) {
-    var dom = {};
-
-    var root = lib.utils.getDom("root");
-    root.innerHTML = template.notfound;
-    dom = { root };
-
-    return dom;
+  function renderAll(data) {
+    var doms = {};
+    doms["root"] = lib.dom.render("root", pages.notfound.getTemplate()); // root must be the first
+    return doms;
   }
 
   // dictate all of handlers for page (Controller)
@@ -47,15 +32,10 @@ var notfound = (function() {
   // pay attention to orders of methods
   // 스코프 체인에 의해 attachHandler 메서드는 외부에서 router를 찾음
   function control(params) {
-    var fns = [init, getData, getTemplateAll, render, attachHandler];
-    var composedFunc = lib.utils.compose(fns);
-    composedFunc(params);
-
-    // var initData = init(params);
-    // var data = getData(initData);
-    // var template = getTemplateAll(data);
-    // var dom = render(template);
-    // attachHandler(dom);
+    var initData = init(params);
+    var data = getData(initData);
+    var doms = renderAll(data);
+    attachHandler(doms);
   }
   return {
     control

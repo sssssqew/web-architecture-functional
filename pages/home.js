@@ -6,8 +6,8 @@ var home = (function() {
   "use strict";
 
   function getTemplate() {
-    return `<div>
-                  <div id="nav"></div>
+    return `<div class="home-page">
+                  <div id="nav" class="home-nav"></div>
                   <div id="search"></div>
                   <ul id="list" class="home-list"></ul>         
                 </div>`;

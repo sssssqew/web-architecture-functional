@@ -45,10 +45,10 @@ var detail = (function() {
 
                     <div class="detail-summary">
                       ${detail_data.summary} <br/>
-                      <a href="/" class="detail-home"> ◀️ Home</a>
+                      
                       <a href="${
                         detail_data.torrentUrl ? detail_data.torrentUrl : ""
-                      }" class="detail-torrent">${
+                      }" target="_blank" class="detail-torrent">${
       detail_data.torrentUrl ? " ☺️ Click to download torrent" : "No Torrent :("
     }</a>
                     </div>

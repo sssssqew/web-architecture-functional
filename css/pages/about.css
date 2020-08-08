@@ -1,8 +1,8 @@
-.home-page {
-  margin-top: 70px; /* 네비게이션 높이만큼 뛰워줘야함*/
+.about-page {
+  margin-top: 70px;
 }
 
-.home-nav {
+.about-nav {
   display: flex;
   justify-content: center;
   position: fixed;
@@ -15,10 +15,4 @@
   /* border: 1px solid red; */
   background-color: black;
   opacity: 0.95;
-}
-
-.home-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
 }

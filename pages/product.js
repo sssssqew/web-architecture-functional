@@ -11,12 +11,12 @@ var product = (function() {
     return `<div>${product_data.title} (${product_data.id})
                 </div>`;
   }
-  // function updateData(updateObj) {
-  //   lib.dom.updateObj(product_data, updateObj);
-  // }
+  function updateData(updateObj) {
+    lib.dom.updateObj(product_data, updateObj);
+  }
   return {
-    getTemplate
-    // updateData
+    getTemplate,
+    updateData
   };
 })();
 

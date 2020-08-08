@@ -50,14 +50,19 @@ var about = (function() {
     var doms = {};
 
     doms["root"] = lib.dom.render("root", pages.about.getTemplate()); // root must be the first
+    doms["nav"] = lib.dom.render("nav", components.nav.getTemplate());
     doms["detail"] = lib.dom.render("detail", components.detail.getTemplate()); // root must be the first
 
     return doms;
   }
 
   // dictate all of handlers for page (Controller)
-  function attachHandler(dom) {
+  function attachHandler(doms) {
     console.log("aboutpage handler attached !");
+
+    doms.nav.addEventListener("click", function(e) {
+      lib.router(e.target.dataset.url);
+    });
   }
 
   // pay attention to orders of methods

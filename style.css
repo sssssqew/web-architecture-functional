@@ -1,8 +1,10 @@
 @import url("css/pages/home.css");
+@import url("css/pages/about.css");
 
 @import url("css/components/item.css");
 @import url("css/components/detail.css");
 @import url("css/components/search.css");
+@import url("css/components/nav.css");
 
 html,
 body {

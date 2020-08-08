@@ -4,7 +4,8 @@ var about = (function() {
   "use strict";
 
   function getTemplate() {
-    return `<div>
+    return `<div class="about-page">
+                  <div id="nav" class="about-nav"></div>
                   <div id="detail" ></div>
                 </div>`;
   }

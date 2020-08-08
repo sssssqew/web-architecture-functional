@@ -9,7 +9,7 @@
 }
 .detail-cover {
   width: 500px;
-  height: 750px;
+  height: 680px;
 }
 .detail-title {
   margin: 0;
@@ -29,14 +29,11 @@
   border-left: 1px solid grey;
   opacity: 0.7;
 }
-.detail-home {
-  float: left;
-  margin-right: 30px;
-}
+
 .detail-torrent {
   float: right;
 }
-.detail-home,
+
 .detail-torrent {
   margin-top: 30px;
 }
