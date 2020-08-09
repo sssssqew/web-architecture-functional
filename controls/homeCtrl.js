@@ -9,6 +9,7 @@ import item from "../components/item.js";
 
 // 페이지 업데이트는 하지말고 컴포넌트만 업데이트 하자
 //  초기렌더링시에 핸들러 다 연결해주는게 나을듯
+// 현재 페이지에서 사용할 state는 home_data에 저장하고 사용하면 됨
 
 var home = (function() {
   "use strict";
@@ -17,6 +18,14 @@ var home = (function() {
 
   function init(params) {
     var data = { params };
+
+    // 아래와 같이 리액트처럼 state를 초기화해도 됨
+    // home_data = {
+    //   params: params,
+    //   picks: [],
+    //   checked: false
+    // }
+
     home_data.params = params; // 비동기 업데이트시 params를 사용하기 위함
     home_data.picks = []; // 위시리스트 아이템 모음
     home_data.checked = false; // 위시리스트 버튼 클릭여부 판단
@@ -91,16 +100,18 @@ var home = (function() {
     console.log("homepage handler attached !");
 
     doms.nav.addEventListener("click", function(e) {
+      // navigation 버튼을 클릭한 경우
       if (e.target.dataset.url) {
         lib.router(e.target.dataset.url);
       }
+      // 위시리스트 버튼을 클릭한 경우
       if (e.target.id === "nav-wish-list") {
         if (e.target.checked === undefined || e.target.checked === "false") {
-          lib.dom.renderMany(home_data.picks);
+          lib.dom.renderMany(home_data.picks); // 전체 아이템 => 하트표시 아이템 렌더링
           e.target.checked = "true";
           home_data.checked = true;
         } else {
-          lib.dom.renderMany(home_data.items);
+          lib.dom.renderMany(home_data.items); // 하트표시 아이템 => 전체 아이템 렌더링
           e.target.checked = "false";
           home_data.checked = false;
         }
@@ -138,11 +149,10 @@ var home = (function() {
         lib.router(`/about/${e.target.id}`);
       }
 
-      //  문제점 2: about 페이지로 갔다가 돌아오면 home_data.picks 가 초기화 되므로 하트 표시를 기억하지 못함
+      //  문제점 2: about 페이지로 갔다가 돌아오면 home_data.picks 가 초기화 되므로 하트 표시를 기억하지 못함 (로컬스토리지에 저장했다가 읽어와서 하면 됨)
 
       // 하트 클릭한 경우
       if (e.target.id === "item-pick") {
-        // var itemTemplates = "";
         home_data.items.forEach(function(item) {
           // pick 또는 unpick 하려는 아이템을 찾음
           if (item.getData().id === parseInt(e.target.parentElement.id)) {
@@ -160,7 +170,6 @@ var home = (function() {
               });
             }
           }
-          // itemTemplates += item.getTemplate();
         });
 
         // 위시리스트 버튼이 클릭된 상태에서 하트를 클릭한 경우 하트 표시된 아이템만 리렌더링함
@@ -170,7 +179,6 @@ var home = (function() {
         } else {
           lib.dom.renderMany(home_data.items);
         }
-        // lib.dom.render("list", itemTemplates);
 
         // pick 아이템 확인용 출력
         console.log("====== pick items ========");
