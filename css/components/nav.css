@@ -1,18 +1,36 @@
-.nav-btn {
+.nav-btn,
+.nav-wish-list {
   all: unset;
-  width: 120px;
   margin: 10px;
   padding: 5px;
-  border: 2px solid skyblue;
   border-radius: 15px;
-  color: skyblue;
   cursor: pointer;
   font-weight: 600;
   font-size: 1.1rem;
   transition: 0.4s all;
 }
-.nav-btn:hover {
-  background-color: skyblue;
+
+.nav-btn:hover,
+.nav-wish-list:hover {
   color: white;
   border: none;
+}
+
+.nav-btn {
+  width: 120px;
+  border: 2px solid skyblue;
+  color: skyblue;
+}
+.nav-wish-list {
+  width: 150px;
+  border: 2px solid red;
+  color: red;
+}
+
+.nav-btn:hover {
+  background-color: skyblue;
+}
+
+.nav-wish-list:hover {
+  background-color: red;
 }

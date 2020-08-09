@@ -18,7 +18,8 @@ var home = (function() {
   function init(params) {
     var data = { params };
     home_data.params = params; // 비동기 업데이트시 params를 사용하기 위함
-    home_data.picks = [];
+    home_data.picks = []; // 위시리스트 아이템 모음
+    home_data.checked = false; // 위시리스트 버튼 클릭여부 판단
     return data;
   }
 
@@ -93,6 +94,17 @@ var home = (function() {
       if (e.target.dataset.url) {
         lib.router(e.target.dataset.url);
       }
+      if (e.target.id === "nav-wish-list") {
+        if (e.target.checked === undefined || e.target.checked === "false") {
+          lib.dom.renderMany(home_data.picks);
+          e.target.checked = "true";
+          home_data.checked = true;
+        } else {
+          lib.dom.renderMany(home_data.items);
+          e.target.checked = "false";
+          home_data.checked = false;
+        }
+      }
     });
 
     //  영화 검색기능 구현
@@ -110,33 +122,27 @@ var home = (function() {
           return movieTitle.includes(searchTitle);
         });
         components.search.updateData({ inputString: "" }); // 입력 컴포넌트 초기화
-
         console.log(components.search.getData().inputString);
 
         // 검색된 영화로만 새로운 리스트를 만들어 리렌더링함
-        var itemTemplates = "";
-        searchedMovies.forEach(function(searchedMovie) {
-          console.log(searchedMovie.getData().title);
-          itemTemplates += searchedMovie.getTemplate();
-        });
-        lib.dom.render("list", itemTemplates);
+        lib.dom.renderMany(searchedMovies);
       }
     });
 
     //  이벤트 위임을 사용하여 ul 요소에만 핸들러를 붙여줌
     doms.list.addEventListener("click", function(e) {
       console.log("list clicked !");
-      // console.log(e.target);
-      // console.log(e.target.id);
 
-      // 사랑표와 아이템 사이에 비어 있는 공간을 클릭하지 않은 경우
+      // 하트 또는 아이템 사이에 비어 있는 공간을 클릭하지 않은 경우
       if (e.target.id !== "list" && e.target.id !== "item-pick") {
         lib.router(`/about/${e.target.id}`);
       }
-      // 사랑표 클릭한 경우
+
+      //  문제점 2: about 페이지로 갔다가 돌아오면 home_data.picks 가 초기화 되므로 하트 표시를 기억하지 못함
+
+      // 하트 클릭한 경우
       if (e.target.id === "item-pick") {
-        // console.log(e.target.parentElement.id);
-        var itemTemplates = "";
+        // var itemTemplates = "";
         home_data.items.forEach(function(item) {
           // pick 또는 unpick 하려는 아이템을 찾음
           if (item.getData().id === parseInt(e.target.parentElement.id)) {
@@ -154,10 +160,17 @@ var home = (function() {
               });
             }
           }
-          // pick 또는 unpick 한 경우 모두 아이템들의 html string을 모아서 저장함
-          itemTemplates += item.getTemplate();
+          // itemTemplates += item.getTemplate();
         });
-        lib.dom.render("list", itemTemplates); // 모아둔 html string으로 리렌더링함
+
+        // 위시리스트 버튼이 클릭된 상태에서 하트를 클릭한 경우 하트 표시된 아이템만 리렌더링함
+        // 위시리스트 버튼이 클릭되지 않은 상태에서 하트를 클릭한 경우 전체 아이템을 리렌더링함
+        if (home_data.checked === true) {
+          lib.dom.renderMany(home_data.picks);
+        } else {
+          lib.dom.renderMany(home_data.items);
+        }
+        // lib.dom.render("list", itemTemplates);
 
         // pick 아이템 확인용 출력
         console.log("====== pick items ========");

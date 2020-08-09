@@ -17,6 +17,7 @@ var nav = (function() {
                 <button class="nav-btn" data-url=${nav_data.contact}>contact</button>
                 <button class="nav-btn" data-url=${nav_data.product}>product</button>
                 <button class="nav-btn" data-url=${nav_data.notfound}>notfound</button>
+                <button class="nav-wish-list" id="nav-wish-list" checked="false">picked items</button>
               `;
   }
   function updateData(updateObj) {
