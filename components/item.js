@@ -11,12 +11,14 @@ var item = function() {
     id: 0,
     title: "item",
     rating: "0",
-    cover: "../resources/default-movie.png"
+    cover: "../resources/default-movie.png",
+    pick: "../resources/undo-pick.png"
   };
 
   //  아이템을 클릭했을때 image를 클릭하느냐 li 배경을 클릭하느냐 title을 클릭하느냐에 따라 e.target이 달라져서 그냥 모든 요소에 같은 id값을 삽입했음
   function getTemplate() {
     return `<li id=${item_data.id} class="item-card">   
+                  <img id="item-pick" src="${item_data.pick}" class="item-pick"/>
                   <img id=${item_data.id} src="${item_data.cover}" class="item-cover"/>
                   <h5 id=${item_data.id}>${item_data.title} (${item_data.rating})</h5>  
                 </li>`;

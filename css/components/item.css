@@ -2,7 +2,7 @@
   display: inline-block;
   max-width: 230px;
   margin: 30px;
-  padding-top: 30px;
+  /* padding-top: 30px; */
   border-radius: 15px;
   cursor: pointer;
   overflow: hidden; /* 무비 커버가 card 밖으로 튀어나오는거 막아줌 */
@@ -10,6 +10,13 @@
 }
 .item-card:hover {
   opacity: 0.7;
+}
+.item-pick {
+  width: 35px;
+  height: 35px;
+  margin: 5px;
+  float: right;
+  cursor: pointer;
 }
 .item-cover {
   /* display: inline-block; */

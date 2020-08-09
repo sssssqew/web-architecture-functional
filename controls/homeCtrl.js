@@ -18,6 +18,7 @@ var home = (function() {
   function init(params) {
     var data = { params };
     home_data.params = params; // 비동기 업데이트시 params를 사용하기 위함
+    home_data.picks = [];
     return data;
   }
 
@@ -89,7 +90,9 @@ var home = (function() {
     console.log("homepage handler attached !");
 
     doms.nav.addEventListener("click", function(e) {
-      lib.router(e.target.dataset.url);
+      if (e.target.dataset.url) {
+        lib.router(e.target.dataset.url);
+      }
     });
 
     //  영화 검색기능 구현
@@ -97,7 +100,7 @@ var home = (function() {
       components.search.updateData({ inputString: e.target.value });
       console.log(components.search.getData());
 
-      // ENTER 키 누르면 검색시작
+      // ENTER 키 누르면 검색시작 (영화 타이틀 중에 검색창 키워드 string을 부분적으로 포함하는 모든 영화들을 서치함)
       if (e.keyCode === 13) {
         var searchedMovies = home_data.items.filter(function(item) {
           var movieTitle = item.getData().title.toLowerCase();
@@ -106,11 +109,11 @@ var home = (function() {
             .inputString.toLowerCase();
           return movieTitle.includes(searchTitle);
         });
-        components.search.updateData({ inputString: "" });
+        components.search.updateData({ inputString: "" }); // 입력 컴포넌트 초기화
 
         console.log(components.search.getData().inputString);
 
-        // 검색된 영화로만 새로운 리스트를 만들어 업데이트함
+        // 검색된 영화로만 새로운 리스트를 만들어 리렌더링함
         var itemTemplates = "";
         searchedMovies.forEach(function(searchedMovie) {
           console.log(searchedMovie.getData().title);
@@ -123,7 +126,45 @@ var home = (function() {
     //  이벤트 위임을 사용하여 ul 요소에만 핸들러를 붙여줌
     doms.list.addEventListener("click", function(e) {
       console.log("list clicked !");
-      lib.router(`/about/${e.target.id}`);
+      // console.log(e.target);
+      // console.log(e.target.id);
+
+      // 사랑표와 아이템 사이에 비어 있는 공간을 클릭하지 않은 경우
+      if (e.target.id !== "list" && e.target.id !== "item-pick") {
+        lib.router(`/about/${e.target.id}`);
+      }
+      // 사랑표 클릭한 경우
+      if (e.target.id === "item-pick") {
+        // console.log(e.target.parentElement.id);
+        var itemTemplates = "";
+        home_data.items.forEach(function(item) {
+          // pick 또는 unpick 하려는 아이템을 찾음
+          if (item.getData().id === parseInt(e.target.parentElement.id)) {
+            // pick 이므로  home_data.picks 배열 끝에 pick 한 아이템을 추가함
+            if (item.getData().pick === "../resources/undo-pick.png") {
+              item.updateData({ pick: "../resources/pick.jpg" });
+              home_data.picks.push(item);
+            } else {
+              item.updateData({ pick: "../resources/undo-pick.png" });
+              // undo pick 이므로 home_data.picks 배열에서 unpick 한 아이템을 제거함
+              home_data.picks = home_data.picks.filter(function(pick) {
+                return (
+                  pick.getData().id !== parseInt(e.target.parentElement.id)
+                );
+              });
+            }
+          }
+          // pick 또는 unpick 한 경우 모두 아이템들의 html string을 모아서 저장함
+          itemTemplates += item.getTemplate();
+        });
+        lib.dom.render("list", itemTemplates); // 모아둔 html string으로 리렌더링함
+
+        // pick 아이템 확인용 출력
+        console.log("====== pick items ========");
+        home_data.picks.forEach(function(item) {
+          console.log(item.getData().title);
+        });
+      }
     });
   }
 
