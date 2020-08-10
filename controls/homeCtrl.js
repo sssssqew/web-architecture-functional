@@ -114,7 +114,11 @@ var home = (function() {
             home_data.localStorageIDs.movies,
             JSON.stringify(home_data.movies)
           );
-          lib.dom.updateAndRenderMany(home_data.movies, home_data.domIDs.list);
+          lib.dom.updateAndRenderMany(
+            components.item,
+            home_data.movies,
+            home_data.domIDs.list
+          );
         });
     }
     components.nav.updateData({
@@ -149,9 +153,17 @@ var home = (function() {
     //  // 서버에서 한번 읽어온 이후부터는 로컬스토리지에서 읽어온 데이티로 렌더링함
     if (home_data.movies.length !== 0) {
       if (home_data.checked === true) {
-        lib.dom.updateAndRenderMany(home_data.wishList, home_data.domIDs.list); // 새로 렌더링할때 위시리스트 버튼이 이전에 클릭되어 있다면 위시리스트만 보여줌
+        lib.dom.updateAndRenderMany(
+          components.item,
+          home_data.wishList,
+          home_data.domIDs.list
+        ); // 새로 렌더링할때 위시리스트 버튼이 이전에 클릭되어 있다면 위시리스트만 보여줌
       } else {
-        lib.dom.updateAndRenderMany(home_data.movies, home_data.domIDs.list);
+        lib.dom.updateAndRenderMany(
+          components.item,
+          home_data.movies,
+          home_data.domIDs.list
+        );
       }
     }
     return doms;
@@ -171,13 +183,18 @@ var home = (function() {
       if (e.target.id === home_data.domIDs.wishList) {
         if (home_data.checked === false) {
           lib.dom.updateAndRenderMany(
+            components.item,
             home_data.wishList,
             home_data.domIDs.list
           ); // 전체 아이템 => 하트표시 아이템 렌더링
           home_data.checked = true;
           home_data.wishBtnString = home_data.btnStrings.wishBtnClicked;
         } else {
-          lib.dom.updateAndRenderMany(home_data.movies, home_data.domIDs.list); // 하트표시 아이템 => 전체 아이템 렌더링
+          lib.dom.updateAndRenderMany(
+            components.item,
+            home_data.movies,
+            home_data.domIDs.list
+          ); // 하트표시 아이템 => 전체 아이템 렌더링
           home_data.checked = false;
           home_data.wishBtnString = home_data.btnStrings.wishBtnUndo;
         }
@@ -216,7 +233,11 @@ var home = (function() {
         console.log(components.search.getData().inputString);
 
         // 검색된 영화로만 새로운 리스트를 만들어 리렌더링함
-        lib.dom.updateAndRenderMany(searchedMovies, home_data.domIDs.list);
+        lib.dom.updateAndRenderMany(
+          components.item,
+          searchedMovies,
+          home_data.domIDs.list
+        );
       }
     });
 
@@ -266,11 +287,16 @@ var home = (function() {
         // 위시리스트 버튼이 클릭되지 않은 상태에서 하트를 클릭한 경우 전체 아이템을 리렌더링함
         if (home_data.checked === true) {
           lib.dom.updateAndRenderMany(
+            components.item,
             home_data.wishList,
             home_data.domIDs.list
           );
         } else {
-          lib.dom.updateAndRenderMany(home_data.movies, home_data.domIDs.list);
+          lib.dom.updateAndRenderMany(
+            components.item,
+            home_data.movies,
+            home_data.domIDs.list
+          );
         }
 
         // 위시리스트 아이템 확인용 출력
