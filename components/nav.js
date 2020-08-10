@@ -11,7 +11,8 @@ var nav = (function() {
     contact: "/contact",
     product: "/product/9?name=computer&price=$30",
     notfound: "/notfound",
-    wishBtnDisplay: true
+    wishBtnDisplay: true,
+    wishBtnString: ""
   };
 
   function getTemplate() {
@@ -30,7 +31,7 @@ var nav = (function() {
                 }>notfound</button>
                 ${
                   nav_data.wishBtnDisplay
-                    ? '<button class="nav-wish-list" id="nav-wish-list">picked items</button>:'
+                    ? `<button class="nav-wish-list" id="nav-wish-list">${nav_data.wishBtnString}</button>:`
                     : ""
                 }
               `;

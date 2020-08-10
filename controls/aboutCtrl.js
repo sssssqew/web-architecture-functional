@@ -9,8 +9,20 @@ var about = (function() {
 
   function init(params) {
     var data = { params };
+
+    about_data.domIDs = {
+      root: "root",
+      nav: "nav",
+      detail: "detail"
+    };
+
+    about_data.localStorageIDs = {
+      movies: "movies"
+    };
+
     about_data.params = params; // 비동기 업데이트시 params를 사용하기 위함
-    about_data.movies = JSON.parse(localStorage.getItem("movies")) || [];
+    about_data.movies =
+      JSON.parse(localStorage.getItem(about_data.localStorageIDs.movies)) || [];
     return data;
   }
 
@@ -22,12 +34,15 @@ var about = (function() {
     // 클로저는 메모리에 저장하기 때문에 새로고침하면 저장된 데이티가 초기화됨
 
     if (initData.params.id) {
+      console.log(about_data.movies);
       var clicked_movie = about_data.movies.filter(function(movie) {
         return movie.id === parseInt(initData.params.id);
       });
       components.detail.updateData(clicked_movie[0]);
     }
-    components.nav.updateData({ wishBtnDisplay: false });
+    components.nav.updateData({
+      wishBtnDisplay: false
+    });
 
     return initData;
   }
@@ -36,9 +51,18 @@ var about = (function() {
   function renderAll(data) {
     var doms = {};
 
-    doms["root"] = lib.dom.render("root", pages.about.getTemplate()); // root must be the first
-    doms["nav"] = lib.dom.render("nav", components.nav.getTemplate());
-    doms["detail"] = lib.dom.render("detail", components.detail.getTemplate()); // root must be the first
+    doms[about_data.domIDs.root] = lib.dom.render(
+      about_data.domIDs.root,
+      pages.about.getTemplate()
+    ); // root must be the first
+    doms[about_data.domIDs.nav] = lib.dom.render(
+      about_data.domIDs.nav,
+      components.nav.getTemplate()
+    );
+    doms[about_data.domIDs.detail] = lib.dom.render(
+      about_data.domIDs.detail,
+      components.detail.getTemplate()
+    ); // root must be the first
 
     return doms;
   }
