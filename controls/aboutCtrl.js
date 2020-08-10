@@ -72,7 +72,9 @@ var about = (function() {
     console.log("aboutpage handler attached !");
 
     doms.nav.addEventListener("click", function(e) {
-      lib.router(e.target.dataset.url);
+      if (e.target.dataset.url) {
+        lib.router(e.target.dataset.url);
+      }
     });
   }
 

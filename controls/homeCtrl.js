@@ -16,8 +16,10 @@ var home = (function() {
   function init(params) {
     var data = { params };
 
-    // 자주 사용하는 상수 선언
+    /****************** 자주 사용하는 상수 선언 ****************/
+
     home_data.domIDs = {
+      // 현재 페이지에서 사용할 DOM 객체의 ID 모음
       root: "root",
       nav: "nav",
       search: "search",
@@ -27,6 +29,7 @@ var home = (function() {
     };
 
     home_data.localStorageIDs = {
+      // 현재 페이지에서 사용할 로컬 스토리지의 ID 모음
       movies: "movies",
       wishList: "wishList",
       wishButton: "wishButton",
@@ -34,35 +37,39 @@ var home = (function() {
     };
 
     home_data.server = {
+      // 현재 페이지에서 사용할 API 관련 상수 모음
       numOfMovies: 50,
-      proxyUrl: "http://localhost:8081/", // 포트포워딩 설정
-      baseUrl: "https://yts.lt/api/v2/"
+      proxyUrl: "http://localhost:8081/", // 프록시 주소 (CORS 해결)
+      baseUrl: "https://yts.lt/api/v2/" // 기본 API 주소
     };
 
     home_data.heartIconUrls = {
+      // 현재 페이지에서 사용할 하트 아이콘 리소스 주소
       empty: "../resources/undo-pick.png",
       full: "../resources/pick.jpg"
     };
 
     home_data.btnStrings = {
+      // 현재 페이지에서 사용할 버튼 텍스트 상수
       wishBtnClicked: "Total items",
       wishBtnUndo: "Picked items"
     };
 
-    // 자주 사용하는 변수 선언
-    home_data.params = params; // 비동기 업데이트시 params를 사용하기 위해 저장함
+    /****************** 자주 사용하는 변수 선언 ****************/
+
+    home_data.params = params; // 비동기 업데이트시 params를 사용하기 위함
     home_data.movies =
-      JSON.parse(localStorage.getItem(home_data.localStorageIDs.movies)) || [];
+      JSON.parse(localStorage.getItem(home_data.localStorageIDs.movies)) || []; // Movies 데이터 배열
     home_data.wishList =
       JSON.parse(localStorage.getItem(home_data.localStorageIDs.wishList)) ||
-      []; // 위시리스트 아이템 모음
+      []; // 위시리스트 데이터 배열
     home_data.checked =
       JSON.parse(localStorage.getItem(home_data.localStorageIDs.wishButton)) ||
       false; // 위시리스트 버튼 클릭여부 판단
     home_data.wishBtnString =
       JSON.parse(
         localStorage.getItem(home_data.localStorageIDs.wishBtnString)
-      ) || home_data.btnStrings.wishBtnUndo; // 위시리스트 버튼 텍스트 변환
+      ) || home_data.btnStrings.wishBtnUndo; // 현재 위시리스트 버튼 텍스트
 
     return data;
   }
@@ -72,6 +79,7 @@ var home = (function() {
     // var proxy =
     //   "http://ec2-13-125-247-196.ap-northeast-2.compute.amazonaws.com:8081/"; // 포트포워딩 설정
 
+    // Movies 데이터를 가져오기 위한 URL 생성
     var LIST_MOVIES_URL = `${home_data.server.proxyUrl +
       home_data.server.baseUrl}list_movies.json?limit=${
       home_data.server.numOfMovies
@@ -110,6 +118,7 @@ var home = (function() {
           });
 
           // 서로 다른 페이지에서 movies 데이터를 공유하기 위하여 로컬스토리지에 저장함
+          // 전역변수 값이 변경되면 로컬 스토리지에 업데이트함 (movies 값 변경됨)
           localStorage.setItem(
             home_data.localStorageIDs.movies,
             JSON.stringify(home_data.movies)
@@ -121,6 +130,7 @@ var home = (function() {
           );
         });
     }
+    // 위시리스트 버튼 표시, 위시리스트 버튼 텍스트 설정
     components.nav.updateData({
       wishBtnDisplay: true,
       wishBtnString: home_data.wishBtnString
@@ -136,7 +146,7 @@ var home = (function() {
     doms[home_data.domIDs.root] = lib.dom.render(
       home_data.domIDs.root,
       pages.home.getTemplate()
-    ); // root must be the first
+    ); // 다른 컴포넌트가 렌더링되기 전에 root DOM 객체에 페이지가 우선적으로 렌더링되어야 함
     doms[home_data.domIDs.nav] = lib.dom.render(
       home_data.domIDs.nav,
       components.nav.getTemplate()
@@ -150,15 +160,17 @@ var home = (function() {
       components.loading.getTemplate()
     );
 
-    //  // 서버에서 한번 읽어온 이후부터는 로컬스토리지에서 읽어온 데이티로 렌더링함
+    // 서버에서 한번 접속한 다음에는 로컬스토리지에서 읽어온 데이티로 렌더링함
     if (home_data.movies.length !== 0) {
       if (home_data.checked === true) {
+        // 위시리스트 버튼이 클릭되어 있는 경우 위시리스트만 렌더링함
         lib.dom.updateAndRenderMany(
           components.item,
           home_data.wishList,
           home_data.domIDs.list
-        ); // 새로 렌더링할때 위시리스트 버튼이 이전에 클릭되어 있다면 위시리스트만 보여줌
+        );
       } else {
+        // 위시리스트 버튼이 클릭되지 않은 경우 전체 무비리스트 렌더링함
         lib.dom.updateAndRenderMany(
           components.item,
           home_data.movies,
@@ -170,14 +182,17 @@ var home = (function() {
   }
 
   // dictate all of handlers for page (Controller)
-  //  초기렌더링시 페이지 dom에 모든 핸들러 연결해줌
+  //  초기렌더링시 페이지 DOM 객체에 모든 핸들러를 연결해줌 (이벤트 위임을 사용하여 이벤트를 캡쳐함)
+  // 페이지에 모든 핸들러가 연결되므로 컴포넌트 업데이트시 핸들러를 연결해주지 않아도 되서 편함
+  // 이벤트 핸들러 패턴 : 전역변수 변경시 로컬스토리지 업데이트 => 필요한 컴포넌트 업데이트 및 리렌더링
   function attachHandler(doms) {
     console.log("homepage handler attached !");
 
+    // 네비게이션 바를 클릭한 경우
     doms.nav.addEventListener("click", function(e) {
-      // navigation 버튼을 클릭한 경우
+      // home, about 등의 네비게이션 버튼을 클릭한 경우
       if (e.target.dataset.url) {
-        lib.router(e.target.dataset.url);
+        lib.router(e.target.dataset.url); // 해당 주소로 라우팅
       }
       // 위시리스트 버튼을 클릭한 경우
       if (e.target.id === home_data.domIDs.wishList) {
@@ -186,41 +201,43 @@ var home = (function() {
             components.item,
             home_data.wishList,
             home_data.domIDs.list
-          ); // 전체 아이템 => 하트표시 아이템 렌더링
+          ); // 전체 아이템 => 위시리스트 아이템 렌더링
           home_data.checked = true;
-          home_data.wishBtnString = home_data.btnStrings.wishBtnClicked;
+          home_data.wishBtnString = home_data.btnStrings.wishBtnClicked; // 버튼텍스트 변경
         } else {
           lib.dom.updateAndRenderMany(
             components.item,
             home_data.movies,
             home_data.domIDs.list
-          ); // 하트표시 아이템 => 전체 아이템 렌더링
+          ); // 위시리스트 아이템 => 전체 아이템 렌더링
           home_data.checked = false;
-          home_data.wishBtnString = home_data.btnStrings.wishBtnUndo;
+          home_data.wishBtnString = home_data.btnStrings.wishBtnUndo; // 버튼텍스트 변경
         }
+        // 전역변수 값이 변경되면 로컬 스토리지에 업데이트함 (checked, wishBtnString 값 변경됨)
         localStorage.setItem(
           home_data.localStorageIDs.wishButton,
-          home_data.checked
-        );
-        // 항상 컴포넌트 업데이트가 되면 변경된 템플릿으로 리렌더링 해야함
-        lib.dom.updateAndRenderSingle(
-          components.nav,
-          { wishBtnString: home_data.wishBtnString },
-          home_data.domIDs.nav
+          JSON.stringify(home_data.checked)
         );
         localStorage.setItem(
           home_data.localStorageIDs.wishBtnString,
           JSON.stringify(home_data.wishBtnString)
+        );
+
+        // 변경된 버튼텍스트로 컴포넌트를 리렌더링함
+        lib.dom.updateAndRenderSingle(
+          components.nav,
+          { wishBtnString: home_data.wishBtnString },
+          home_data.domIDs.nav
         );
       }
     });
 
     //  영화 검색기능 구현
     doms.search.addEventListener("keyup", function(e) {
-      components.search.updateData({ inputString: e.target.value });
+      components.search.updateData({ inputString: e.target.value }); // 사용자가 입력한 키워드로 컴포넌트 업데이트
       console.log(components.search.getData());
 
-      // ENTER 키 누르면 검색시작 (영화 타이틀 중에 검색창 키워드 string을 부분적으로 포함하는 모든 영화들을 서치함)
+      // ENTER 키 누르면 검색시작 (영화 타이틀 중에 검색창 키워드를 부분적으로 포함하는 모든 영화들을 검색함)
       if (e.keyCode === 13) {
         var searchedMovies = home_data.movies.filter(function(movie) {
           var movieTitle = movie.title.toLowerCase();
@@ -245,7 +262,7 @@ var home = (function() {
     doms.list.addEventListener("click", function(e) {
       console.log("list clicked !");
 
-      // 하트 또는 아이템 사이에 비어 있는 공간을 클릭하지 않은 경우
+      // 하트 또는 아이템 사이에 비어 있는 공간을 클릭하지 않은 경우 (즉, 상세페이지를 보기 위하여 영화 커버를 클릭한 경우)
       if (
         e.target.id !== home_data.domIDs.list &&
         e.target.id !== home_data.domIDs.pick
@@ -253,22 +270,21 @@ var home = (function() {
         lib.router(`/about/${e.target.id}`);
       }
 
-      // 하트 클릭한 경우
+      // 찜하기(하트)를 클릭한 경우
       if (e.target.id === home_data.domIDs.pick) {
         home_data.movies = home_data.movies.map(function(movie) {
-          // pick 또는 unpick 하려는 아이템을 찾음
+          // 위시리스트에 추가하려는 아이템을 찾음
           if (movie.id === parseInt(e.target.parentElement.id)) {
-            // pick 이므로  home_data.picks 배열 끝에 pick 한 아이템을 추가함
             if (movie.pick === home_data.heartIconUrls.empty) {
-              movie.pick = home_data.heartIconUrls.full;
-              home_data.wishList.push(movie);
+              movie.pick = home_data.heartIconUrls.full; // pick 이므로 색칠한 하트 모양으로 리소스 주소를 변경함
+              home_data.wishList.push(movie); // pick 이므로  home_data.wishList 배열 끝에 pick 한 아이템을 추가함
             } else {
-              movie.pick = home_data.heartIconUrls.empty;
-              // undo pick 이므로 home_data.picks 배열에서 unpick 한 아이템을 제거함
+              movie.pick = home_data.heartIconUrls.empty; // undo pick 이므로 빈 하트 모양으로 리소스 주소를 변경함
               home_data.wishList = home_data.wishList.filter(function(movie) {
                 return movie.id !== parseInt(e.target.parentElement.id);
-              });
+              }); // undo pick 이므로 home_data.wishList 배열에서 unpick 한 아이템을 제거함
             }
+            // 전역변수 값이 변경되면 로컬 스토리지에 업데이트함 (wishList 값 변경됨)
             localStorage.setItem(
               home_data.localStorageIDs.wishList,
               JSON.stringify(home_data.wishList)
@@ -277,26 +293,24 @@ var home = (function() {
           return movie;
         });
 
-        // movies 중 특정 movies의 속성이 변경되었기 때문에 다시 로컬스토리에 업데이트 해줘야함
+        // movies 중 특정 movie 의 속성(pick)이 변경되었기 때문에 다시 로컬스토리에 업데이트 해줘야함 (movies 값 변경됨)
         localStorage.setItem(
           home_data.localStorageIDs.movies,
           JSON.stringify(home_data.movies)
         );
 
-        // 위시리스트 버튼이 클릭된 상태에서 하트를 클릭한 경우 하트 표시된 아이템만 리렌더링함
-        // 위시리스트 버튼이 클릭되지 않은 상태에서 하트를 클릭한 경우 전체 아이템을 리렌더링함
         if (home_data.checked === true) {
           lib.dom.updateAndRenderMany(
             components.item,
             home_data.wishList,
             home_data.domIDs.list
-          );
+          ); // 위시리스트 버튼이 클릭된 상태에서 하트를 클릭한 경우 위시리스트 아이템만 리렌더링함
         } else {
           lib.dom.updateAndRenderMany(
             components.item,
             home_data.movies,
             home_data.domIDs.list
-          );
+          ); // 위시리스트 버튼이 클릭되지 않은 상태에서 하트를 클릭한 경우 전체 아이템을 리렌더링함
         }
 
         // 위시리스트 아이템 확인용 출력
