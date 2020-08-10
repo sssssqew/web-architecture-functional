@@ -27,8 +27,9 @@ var home = (function() {
     // }
 
     home_data.params = params; // 비동기 업데이트시 params를 사용하기 위함
-    home_data.picks = []; // 위시리스트 아이템 모음
-    home_data.checked = false; // 위시리스트 버튼 클릭여부 판단
+    home_data.movies = JSON.parse(localStorage.getItem("movies")) || [];
+    home_data.wishList = JSON.parse(localStorage.getItem("wishList")) || []; // 위시리스트 아이템 모음
+    home_data.checked = JSON.parse(localStorage.getItem("wishButton")) || false; // 위시리스트 버튼 클릭여부 판단
     return data;
   }
 
@@ -44,42 +45,50 @@ var home = (function() {
       BASE_URL}list_movies.json?limit=${numOfMovies}`;
     console.log(LIST_MOVIES_URL);
 
-    lib.server
-      .transfer(LIST_MOVIES_URL)
-      .then(function(res) {
-        return res.json();
-      })
-      .then(function(sdata) {
-        console.log(sdata.data.movies.length);
-        var movies = sdata.data.movies;
-
-        // 서로 다른 페이지에서 movies 데이터를 공유하기 위하여 로컬스토리지에 저장함
-        localStorage.setItem("movies", JSON.stringify(movies));
-
-        var itemTemplates = "";
-
-        var items = movies.map(function(movie) {
-          var item = components.item();
-
-          item.updateData({
-            id: movie.id,
-            title: movie.title,
-            rating: movie.rating,
-            cover: movie.medium_cover_image
+    // 캐쉬사용 (서버에서 데이터를 한번만 가져옴)
+    //이렇게 하면 변경된 부분이 서버에 반영이 안될것 같지만
+    // 로컬스토리지에 변경된 데이터를 계속 팔로잉하고 있다가
+    // 사용자가 로그아웃할때 하기전에 로컬스토리지에 마지막으로 변경된 데이터를 서버에 저장함
+    // 이렇게 하면 서버에 여러번 접속함으로 인한 사용자 불편함으로 해소하고 오프라인에서도 사용가능함
+    // 그러나 DB에서 실시간으로 데이터를 바로 바로 가져와서 렌더링해야 하는 경우 아래 코드처럼 짜면 안된다.
+    if (home_data.movies.length === 0) {
+      lib.server
+        .transfer(LIST_MOVIES_URL)
+        .then(function(res) {
+          return res.json();
+        })
+        .then(function(sdata) {
+          // API 에서 받은 값 중에서 필요한 값만 추출해서 사용하고 내가 필요한 속성은 따로 추가하여 사용함
+          // 여기서 pick은 API에서 추출한 속성이 아니라 내가 필요해서 추가한 속성임
+          console.log(sdata.data.movies.length);
+          var emptyHeartIcon = "../resources/undo-pick.png";
+          home_data.movies = sdata.data.movies.map(function(movie) {
+            return {
+              id: movie.id,
+              title: movie.title,
+              rating: movie.rating,
+              year: movie.year,
+              runtime: movie.runtime,
+              cover: movie.medium_cover_image,
+              summary: movie.summary,
+              genres: movie.genres ? movie.genres.join(" #") : "",
+              trailer: movie.yt_trailer_code,
+              torrentUrl: movie.torrents[1] ? movie.torrents[1].url : "",
+              pick: emptyHeartIcon
+            };
           });
-          itemTemplates += item.getTemplate();
-          return item;
+
+          // 서로 다른 페이지에서 movies 데이터를 공유하기 위하여 로컬스토리지에 저장함
+          localStorage.setItem("movies", JSON.stringify(home_data.movies));
+          lib.dom.renderMany(home_data.movies);
+
+          // 컴포넌트만 업데이트할 거면 컴포넌트 데이터 교체하고 템플릿 가져온 다음 페이지 특정 위치에 삽입해주면 됨
+          // 컴포넌트(즉시실행함수)는 하나의 실행환경이다
+          // 업데이트는 하나의 실행환경(클로저)을 변경하는 것이다
+
+          // params는  init 함수내에서 전역변수에 저장했다가 업데이트(리랜더링)시 사용하기
         });
-
-        home_data.items = items; // 추후 아이템 각각의 데이터 변경과 검색을 위하여 home_data에 저장하고 이벤트가 일어난 경우 사용함
-        lib.dom.render("list", itemTemplates);
-
-        // 컴포넌트만 업데이트할 거면 컴포넌트 데이터 교체하고 템플릿 가져온 다음 페이지 특정 위치에 삽입해주면 됨
-        // 컴포넌트(즉시실행함수)는 하나의 실행환경이다
-        // 업데이트는 하나의 실행환경(클로저)을 변경하는 것이다
-
-        // params는  init 함수내에서 전역변수에 저장했다가 업데이트(리랜더링)시 사용하기
-      });
+    }
 
     console.log("after fetch ...");
     return initData;
@@ -92,6 +101,15 @@ var home = (function() {
     doms["nav"] = lib.dom.render("nav", components.nav.getTemplate());
     doms["search"] = lib.dom.render("search", components.search.getTemplate());
     doms["list"] = lib.dom.render("list", components.loading.getTemplate());
+
+    //  // 서버에서 한번 읽어온 이후부터는 로컬스토리지에서 읽어온 데이티로 렌더링함
+    if (home_data.movies.length !== 0) {
+      if (home_data.checked === true) {
+        lib.dom.renderMany(home_data.wishList); // 새로 렌더링할때 위시리스트 버튼이 이전에 클릭되어 있다면 위시리스트만 보여줌
+      } else {
+        lib.dom.renderMany(home_data.movies);
+      }
+    }
     return doms;
   }
 
@@ -106,14 +124,14 @@ var home = (function() {
       }
       // 위시리스트 버튼을 클릭한 경우
       if (e.target.id === "nav-wish-list") {
-        if (e.target.checked === undefined || e.target.checked === "false") {
-          lib.dom.renderMany(home_data.picks); // 전체 아이템 => 하트표시 아이템 렌더링
-          e.target.checked = "true";
+        if (home_data.checked === false) {
+          lib.dom.renderMany(home_data.wishList); // 전체 아이템 => 하트표시 아이템 렌더링
           home_data.checked = true;
+          localStorage.setItem("wishButton", home_data.checked);
         } else {
-          lib.dom.renderMany(home_data.items); // 하트표시 아이템 => 전체 아이템 렌더링
-          e.target.checked = "false";
+          lib.dom.renderMany(home_data.movies); // 하트표시 아이템 => 전체 아이템 렌더링
           home_data.checked = false;
+          localStorage.setItem("wishButton", home_data.checked);
         }
       }
     });
@@ -125,8 +143,8 @@ var home = (function() {
 
       // ENTER 키 누르면 검색시작 (영화 타이틀 중에 검색창 키워드 string을 부분적으로 포함하는 모든 영화들을 서치함)
       if (e.keyCode === 13) {
-        var searchedMovies = home_data.items.filter(function(item) {
-          var movieTitle = item.getData().title.toLowerCase();
+        var searchedMovies = home_data.movies.filter(function(movie) {
+          var movieTitle = movie.title.toLowerCase();
           var searchTitle = components.search
             .getData()
             .inputString.toLowerCase();
@@ -149,41 +167,49 @@ var home = (function() {
         lib.router(`/about/${e.target.id}`);
       }
 
-      //  문제점 2: about 페이지로 갔다가 돌아오면 home_data.picks 가 초기화 되므로 하트 표시를 기억하지 못함 (로컬스토리지에 저장했다가 읽어와서 하면 됨)
-
       // 하트 클릭한 경우
       if (e.target.id === "item-pick") {
-        home_data.items.forEach(function(item) {
+        home_data.movies = home_data.movies.map(function(movie) {
           // pick 또는 unpick 하려는 아이템을 찾음
-          if (item.getData().id === parseInt(e.target.parentElement.id)) {
+          if (movie.id === parseInt(e.target.parentElement.id)) {
             // pick 이므로  home_data.picks 배열 끝에 pick 한 아이템을 추가함
-            if (item.getData().pick === "../resources/undo-pick.png") {
-              item.updateData({ pick: "../resources/pick.jpg" });
-              home_data.picks.push(item);
+            if (movie.pick === "../resources/undo-pick.png") {
+              movie.pick = "../resources/pick.jpg";
+              home_data.wishList.push(movie);
+              localStorage.setItem(
+                "wishList",
+                JSON.stringify(home_data.wishList)
+              );
             } else {
-              item.updateData({ pick: "../resources/undo-pick.png" });
+              movie.pick = "../resources/undo-pick.png";
               // undo pick 이므로 home_data.picks 배열에서 unpick 한 아이템을 제거함
-              home_data.picks = home_data.picks.filter(function(pick) {
-                return (
-                  pick.getData().id !== parseInt(e.target.parentElement.id)
-                );
+              home_data.wishList = home_data.wishList.filter(function(movie) {
+                return movie.id !== parseInt(e.target.parentElement.id);
               });
+              localStorage.setItem(
+                "wishList",
+                JSON.stringify(home_data.wishList)
+              );
             }
           }
+          return movie;
         });
+
+        // movies 중 특정 movies의 속성이 변경되었기 때문에 다시 로컬스토리에 업데이트 해줘야함
+        localStorage.setItem("movies", JSON.stringify(home_data.movies));
 
         // 위시리스트 버튼이 클릭된 상태에서 하트를 클릭한 경우 하트 표시된 아이템만 리렌더링함
         // 위시리스트 버튼이 클릭되지 않은 상태에서 하트를 클릭한 경우 전체 아이템을 리렌더링함
         if (home_data.checked === true) {
-          lib.dom.renderMany(home_data.picks);
+          lib.dom.renderMany(home_data.wishList);
         } else {
-          lib.dom.renderMany(home_data.items);
+          lib.dom.renderMany(home_data.movies);
         }
 
         // pick 아이템 확인용 출력
-        console.log("====== pick items ========");
-        home_data.picks.forEach(function(item) {
-          console.log(item.getData().title);
+        console.log("====== picked items ========");
+        home_data.wishList.forEach(function(movie) {
+          console.log(movie.title);
         });
       }
     });

@@ -5,8 +5,12 @@ import lib from "../lib/index.js";
 var about = (function() {
   "use strict";
 
+  var about_data = {};
+
   function init(params) {
     var data = { params };
+    about_data.params = params; // 비동기 업데이트시 params를 사용하기 위함
+    about_data.movies = JSON.parse(localStorage.getItem("movies")) || [];
     return data;
   }
 
@@ -18,28 +22,10 @@ var about = (function() {
     // 클로저는 메모리에 저장하기 때문에 새로고침하면 저장된 데이티가 초기화됨
 
     if (initData.params.id) {
-      var movies = JSON.parse(localStorage.getItem("movies"));
-
-      var clicked_movie = movies.filter(function(movie) {
+      var clicked_movie = about_data.movies.filter(function(movie) {
         return movie.id === parseInt(initData.params.id);
       });
-
-      components.detail.updateData({
-        id: clicked_movie[0].id,
-        title: clicked_movie[0].title,
-        rating: clicked_movie[0].rating,
-        year: clicked_movie[0].year,
-        runtime: clicked_movie[0].runtime,
-        cover: clicked_movie[0].large_cover_image,
-        summary: clicked_movie[0].summary,
-        genres: clicked_movie[0].genres
-          ? clicked_movie[0].genres.join(" #")
-          : "",
-        trailer: clicked_movie[0].yt_trailer_code,
-        torrentUrl: clicked_movie[0].torrents[1]
-          ? clicked_movie[0].torrents[1].url
-          : ""
-      });
+      components.detail.updateData(clicked_movie[0]);
     }
 
     return initData;
