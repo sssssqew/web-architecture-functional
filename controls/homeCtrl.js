@@ -3,17 +3,14 @@ import components from "../components/index.js";
 import lib from "../lib/index.js";
 import item from "../components/item.js";
 
-// filter map 함수 사용하기
 // 데이터 유효성 검사하기
 //  에러 처리하기
-
-// 페이지 업데이트는 하지말고 컴포넌트만 업데이트 하자
-//  초기렌더링시에 핸들러 다 연결해주는게 나을듯
-// 현재 페이지에서 사용할 state는 home_data에 저장하고 사용하면 됨
 
 var home = (function() {
   "use strict";
 
+  // 리액트의 state와 같은 역할
+  // 현재 페이지에서 사용할 임시 데이터들을 저장하고 사용함 (전역변수)
   var home_data = {};
 
   function init(params) {
@@ -26,10 +23,14 @@ var home = (function() {
     //   checked: false
     // }
 
-    home_data.params = params; // 비동기 업데이트시 params를 사용하기 위함
+    home_data.params = params; // 비동기 업데이트시 params를 사용하기 위해 저장함
     home_data.movies = JSON.parse(localStorage.getItem("movies")) || [];
     home_data.wishList = JSON.parse(localStorage.getItem("wishList")) || []; // 위시리스트 아이템 모음
     home_data.checked = JSON.parse(localStorage.getItem("wishButton")) || false; // 위시리스트 버튼 클릭여부 판단
+    home_data.heartIconUrls = {
+      empty: "../resources/undo-pick.png",
+      full: "../resources/pick.jpg"
+    };
     return data;
   }
 
@@ -46,10 +47,9 @@ var home = (function() {
     console.log(LIST_MOVIES_URL);
 
     // 캐쉬사용 (서버에서 데이터를 한번만 가져옴)
-    //이렇게 하면 변경된 부분이 서버에 반영이 안될것 같지만
-    // 로컬스토리지에 변경된 데이터를 계속 팔로잉하고 있다가
-    // 사용자가 로그아웃할때 하기전에 로컬스토리지에 마지막으로 변경된 데이터를 서버에 저장함
-    // 이렇게 하면 서버에 여러번 접속함으로 인한 사용자 불편함으로 해소하고 오프라인에서도 사용가능함
+    // 만약 클라이언트에서 데이터 변경이 일어나면 로컬스토리지에 일단 변경된 데이터를 저장해둠
+    // 사용자가 로그아웃하기 전에 로컬스토리지에 마지막으로 변경된 데이터를 서버에 업데이트함
+    // 이렇게 하면 서버에 여러번 접속함으로 인한 사용자 불편함을 해소하고 오프라인에서도 사용가능함
     // 그러나 DB에서 실시간으로 데이터를 바로 바로 가져와서 렌더링해야 하는 경우 아래 코드처럼 짜면 안된다.
     if (home_data.movies.length === 0) {
       lib.server
@@ -61,7 +61,6 @@ var home = (function() {
           // API 에서 받은 값 중에서 필요한 값만 추출해서 사용하고 내가 필요한 속성은 따로 추가하여 사용함
           // 여기서 pick은 API에서 추출한 속성이 아니라 내가 필요해서 추가한 속성임
           console.log(sdata.data.movies.length);
-          var emptyHeartIcon = "../resources/undo-pick.png";
           home_data.movies = sdata.data.movies.map(function(movie) {
             return {
               id: movie.id,
@@ -74,21 +73,16 @@ var home = (function() {
               genres: movie.genres ? movie.genres.join(" #") : "",
               trailer: movie.yt_trailer_code,
               torrentUrl: movie.torrents[1] ? movie.torrents[1].url : "",
-              pick: emptyHeartIcon
+              pick: home_data.heartIconUrls.empty
             };
           });
 
           // 서로 다른 페이지에서 movies 데이터를 공유하기 위하여 로컬스토리지에 저장함
           localStorage.setItem("movies", JSON.stringify(home_data.movies));
           lib.dom.renderMany(home_data.movies);
-
-          // 컴포넌트만 업데이트할 거면 컴포넌트 데이터 교체하고 템플릿 가져온 다음 페이지 특정 위치에 삽입해주면 됨
-          // 컴포넌트(즉시실행함수)는 하나의 실행환경이다
-          // 업데이트는 하나의 실행환경(클로저)을 변경하는 것이다
-
-          // params는  init 함수내에서 전역변수에 저장했다가 업데이트(리랜더링)시 사용하기
         });
     }
+    components.nav.updateData({ wishBtnDisplay: true });
 
     console.log("after fetch ...");
     return initData;
@@ -114,6 +108,7 @@ var home = (function() {
   }
 
   // dictate all of handlers for page (Controller)
+  //  초기렌더링시 페이지 dom에 모든 핸들러 연결해줌
   function attachHandler(doms) {
     console.log("homepage handler attached !");
 
@@ -173,15 +168,15 @@ var home = (function() {
           // pick 또는 unpick 하려는 아이템을 찾음
           if (movie.id === parseInt(e.target.parentElement.id)) {
             // pick 이므로  home_data.picks 배열 끝에 pick 한 아이템을 추가함
-            if (movie.pick === "../resources/undo-pick.png") {
-              movie.pick = "../resources/pick.jpg";
+            if (movie.pick === home_data.heartIconUrls.empty) {
+              movie.pick = home_data.heartIconUrls.full;
               home_data.wishList.push(movie);
               localStorage.setItem(
                 "wishList",
                 JSON.stringify(home_data.wishList)
               );
             } else {
-              movie.pick = "../resources/undo-pick.png";
+              movie.pick = home_data.heartIconUrls.empty;
               // undo pick 이므로 home_data.picks 배열에서 unpick 한 아이템을 제거함
               home_data.wishList = home_data.wishList.filter(function(movie) {
                 return movie.id !== parseInt(e.target.parentElement.id);
@@ -206,7 +201,7 @@ var home = (function() {
           lib.dom.renderMany(home_data.movies);
         }
 
-        // pick 아이템 확인용 출력
+        // 위시리스트 아이템 확인용 출력
         console.log("====== picked items ========");
         home_data.wishList.forEach(function(movie) {
           console.log(movie.title);

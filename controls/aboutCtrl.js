@@ -27,6 +27,7 @@ var about = (function() {
       });
       components.detail.updateData(clicked_movie[0]);
     }
+    components.nav.updateData({ wishBtnDisplay: false });
 
     return initData;
   }
