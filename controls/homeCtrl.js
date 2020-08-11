@@ -17,7 +17,7 @@ var home = (function() {
     var data = { params };
 
     /****************** 자주 사용하는 상수 선언 ****************/
-
+    //home_data.domIDs.modal
     home_data.domIDs = {
       // 현재 페이지에서 사용할 DOM 객체의 ID 모음
       root: "root",
@@ -25,6 +25,8 @@ var home = (function() {
       search: "search",
       list: "list",
       modal: "modal",
+      modalDelete: "modal-delete",
+      modalClose: "modal-close",
       wishList: "nav-wish-list",
       pick: "item-pick",
       delete: "item-delete"
@@ -169,9 +171,6 @@ var home = (function() {
       components.modal.getTemplate()
     );
 
-    // 모달창 생길때 스크롤바 안생기게 함
-    document.body.style.overflow = "hidden";
-
     // 서버에서 한번 접속한 다음에는 로컬스토리지에서 읽어온 데이티로 렌더링함
     if (home_data.movies.length !== 0) {
       if (home_data.checked === true) {
@@ -285,6 +284,9 @@ var home = (function() {
 
       //아이템 삭제 버튼을 클릭한 경우
       if (e.target.id === home_data.domIDs.delete) {
+        console.log("modal opended !");
+        // 모달창 생길때 스크롤바 안생기게 함
+        document.body.style.overflow = "hidden";
         // getElementById는 document의 메서드 (다른 자식 메서드에서 사용불가)
         var modal = doms.modal.querySelector("#modal-frame");
         modal.classList.add("show"); // 모달창 보이기
@@ -338,6 +340,24 @@ var home = (function() {
         home_data.wishList.forEach(function(movie) {
           console.log(movie.title);
         });
+      }
+    });
+
+    // 모달창에서 클릭이 일어난 경우
+    doms.modal.addEventListener("click", function(e) {
+      console.log("modal clicked ! ...");
+
+      // 모달창 close 버튼 클릭한 경우
+      if (e.target.id === home_data.domIDs.modalClose) {
+        // 모달창 생길때 스크롤바 안생기게 함
+        document.body.style.overflow = "auto";
+        var modal = doms.modal.querySelector("#modal-frame");
+        modal.classList.remove("show"); // 모달창 감추기
+      }
+      // 모달창 delete 버튼 클릭한 경우
+      if (e.target.id === home_data.domIDs.modalDelete) {
+        // 삭제한 영화를 다시 추가할수는 없으니까 위시리스트까지 삭제해도 될듯
+        // 무비삭제  전체 리스트 + 위시리스트 모두 해당 무비 삭제
       }
     });
   }

@@ -15,8 +15,8 @@ var modal = (function() {
                     </div>
                     <div class="modal-footer">
                       <div class="modal-btns">
-                        <button class="modal-delete">Delete</button>
-                        <button class="modal-close">Close</button>
+                        <button id="modal-delete" class="modal-delete">Delete</button>
+                        <button id="modal-close" class="modal-close">Close</button>
                       </div>
                     </div>
                   </div>
