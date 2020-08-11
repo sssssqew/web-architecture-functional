@@ -24,6 +24,7 @@ var home = (function() {
       nav: "nav",
       search: "search",
       list: "list",
+      modal: "modal",
       wishList: "nav-wish-list",
       pick: "item-pick"
     };
@@ -151,14 +152,24 @@ var home = (function() {
       home_data.domIDs.nav,
       components.nav.getTemplate()
     );
+    // 검색창 렌더링
     doms[home_data.domIDs.search] = lib.dom.render(
       home_data.domIDs.search,
       components.search.getTemplate()
     );
+    // 무비 리스트 렌더링
     doms[home_data.domIDs.list] = lib.dom.render(
       home_data.domIDs.list,
       components.loading.getTemplate()
     );
+    // 모달창 렌더링
+    doms[home_data.domIDs.modal] = lib.dom.render(
+      home_data.domIDs.modal,
+      components.modal.getTemplate()
+    );
+
+    // 모달창 생길때 스크롤바 안생기게 함
+    document.body.style.overflow = "hidden";
 
     // 서버에서 한번 접속한 다음에는 로컬스토리지에서 읽어온 데이티로 렌더링함
     if (home_data.movies.length !== 0) {

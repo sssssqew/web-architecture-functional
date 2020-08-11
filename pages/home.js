@@ -11,6 +11,7 @@ var home = (function() {
 
   function getTemplate() {
     return `<div class="home-page">
+                  <div id="modal"></div>
                   <div id="nav" class="home-nav"></div>
                   <div id="search"></div>
                   <ul id="list" class="home-list"></ul>         

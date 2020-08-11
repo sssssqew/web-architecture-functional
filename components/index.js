@@ -3,6 +3,7 @@ import nav from "./nav.js";
 import detail from "./detail.js";
 import search from "./search.js";
 import loading from "./loading.js";
+import modal from "./modal.js";
 
 var components = (function() {
   "use strict";
@@ -12,7 +13,8 @@ var components = (function() {
     nav,
     detail,
     search,
-    loading
+    loading,
+    modal
   };
 })();
 
