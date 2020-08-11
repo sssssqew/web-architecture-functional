@@ -25,6 +25,7 @@ var home = (function() {
       search: "search",
       list: "list",
       modal: "modal",
+      modalFrame: "#modal-frame",
       modalDelete: "modal-delete",
       modalClose: "modal-close",
       wishList: "nav-wish-list",
@@ -57,6 +58,12 @@ var home = (function() {
       // 현재 페이지에서 사용할 버튼 텍스트 상수
       wishBtnClicked: "Total items",
       wishBtnUndo: "Picked items"
+    };
+
+    home_data.modal = {
+      show: "show",
+      hidden: "hidden",
+      auto: "auto"
     };
 
     /****************** 자주 사용하는 변수 선언 ****************/
@@ -286,10 +293,10 @@ var home = (function() {
       if (e.target.id === home_data.domIDs.delete) {
         console.log("modal opended !");
         // 모달창 생길때 스크롤바 안생기게 함
-        document.body.style.overflow = "hidden";
+        document.body.style.overflow = home_data.modal.hidden;
         // getElementById는 document의 메서드 (다른 자식 메서드에서 사용불가)
-        var modal = doms.modal.querySelector("#modal-frame");
-        modal.classList.add("show"); // 모달창 보이기
+        var modal = doms.modal.querySelector(home_data.domIDs.modalFrame);
+        modal.classList.add(home_data.modal.show); // 모달창 보이기
       }
 
       // 찜하기(하트)를 클릭한 경우
@@ -350,9 +357,9 @@ var home = (function() {
       // 모달창 close 버튼 클릭한 경우
       if (e.target.id === home_data.domIDs.modalClose) {
         // 모달창 생길때 스크롤바 안생기게 함
-        document.body.style.overflow = "auto";
-        var modal = doms.modal.querySelector("#modal-frame");
-        modal.classList.remove("show"); // 모달창 감추기
+        document.body.style.overflow = home_data.modal.auto;
+        var modal = doms.modal.querySelector(home_data.domIDs.modalFrame);
+        modal.classList.remove(home_data.modal.show); // 모달창 감추기
       }
       // 모달창 delete 버튼 클릭한 경우
       if (e.target.id === home_data.domIDs.modalDelete) {
