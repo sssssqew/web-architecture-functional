@@ -2,12 +2,25 @@ var modal = (function() {
   "use strict";
 
   var modal_data = {
-    src: "../resources/loading-noback.gif"
+    src: "../resources/delete.png"
   };
   function getTemplate() {
-    return `<div class="modal-frame">
-    MODAL
-    </div>`;
+    return `<div id="modal-frame" class="modal-frame">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <img src=${modal_data.src}>
+                    </div>
+                    <div class="modal-body">
+                      You are sure to delte this movie?
+                    </div>
+                    <div class="modal-footer">
+                      <div class="modal-btns">
+                        <button class="modal-delete">Delete</button>
+                        <button class="modal-close">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>`;
   }
   function updateData(updateObj) {
     lib.dom.updateObj(modal_data, updateObj);

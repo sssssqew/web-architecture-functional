@@ -26,7 +26,8 @@ var home = (function() {
       list: "list",
       modal: "modal",
       wishList: "nav-wish-list",
-      pick: "item-pick"
+      pick: "item-pick",
+      delete: "item-delete"
     };
 
     home_data.localStorageIDs = {
@@ -273,12 +274,20 @@ var home = (function() {
     doms.list.addEventListener("click", function(e) {
       console.log("list clicked !");
 
-      // 하트 또는 아이템 사이에 비어 있는 공간을 클릭하지 않은 경우 (즉, 상세페이지를 보기 위하여 영화 커버를 클릭한 경우)
+      // 하트 또는 삭제버튼 또는 아이템 사이에 비어 있는 공간을 클릭하지 않은 경우 (즉, 상세페이지를 보기 위하여 영화 커버를 클릭한 경우)
       if (
         e.target.id !== home_data.domIDs.list &&
-        e.target.id !== home_data.domIDs.pick
+        e.target.id !== home_data.domIDs.pick &&
+        e.target.id !== home_data.domIDs.delete
       ) {
         lib.router(`/about/${e.target.id}`);
+      }
+
+      //아이템 삭제 버튼을 클릭한 경우
+      if (e.target.id === home_data.domIDs.delete) {
+        // getElementById는 document의 메서드 (다른 자식 메서드에서 사용불가)
+        var modal = doms.modal.querySelector("#modal-frame");
+        modal.classList.add("show"); // 모달창 보이기
       }
 
       // 찜하기(하트)를 클릭한 경우

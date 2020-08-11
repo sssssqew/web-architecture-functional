@@ -14,9 +14,26 @@
 .item-pick {
   width: 35px;
   height: 35px;
-  margin: 5px;
-  float: right;
+  margin: 10px;
+  float: left;
   cursor: pointer;
+}
+.item-delete {
+  width: 35px;
+  height: 35px;
+  margin: 5px;
+  line-height: 35px;
+  float: right;
+  font-size: 1.5rem;
+  /* border: 1px solid red; */
+  font-weight: 600;
+  padding: 0;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.item-delete:hover {
+  color: red;
+  transform: rotate(90deg);
 }
 .item-cover {
   /* display: inline-block; */

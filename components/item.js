@@ -25,6 +25,7 @@ var item = (function() {
   function getTemplate() {
     return `<li id=${item_data.id} class="item-card">   
                   <img id="item-pick" src="${item_data.pick}" class="item-pick"/>
+                  <div id="item-delete" class="item-delete">&times;</div>
                   <img id=${item_data.id} src="${item_data.cover}" class="item-cover"/>
                   <h5 id=${item_data.id}>${item_data.title} (${item_data.rating})</h5>  
                 </li>`;
