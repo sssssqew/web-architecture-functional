@@ -11,7 +11,7 @@ var modal = (function() {
                       <img src=${modal_data.src}>
                     </div>
                     <div class="modal-body">
-                      You are sure to delte this movie?
+                      Are you sure to delete this movie?
                     </div>
                     <div class="modal-footer">
                       <div class="modal-btns">

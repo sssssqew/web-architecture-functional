@@ -13,6 +13,37 @@ var home = (function() {
   // 현재 페이지에서 사용할 임시 데이터들을 저장하고 사용함 (전역변수)
   var home_data = {};
 
+  // 헬퍼 함수 (중복되는 코드 정리)
+  function _renderMoviesByWishListBtnState(btnState) {
+    if (btnState === true) {
+      // 위시리스트 버튼이 클릭되어 있는 경우 위시리스트만 렌더링함
+      lib.dom.updateAndRenderMany(
+        components.item,
+        home_data.wishList,
+        home_data.domIDs.list
+      );
+    } else {
+      // 위시리스트 버튼이 클릭되지 않은 경우 전체 무비리스트 렌더링함
+      lib.dom.updateAndRenderMany(
+        components.item,
+        home_data.movies,
+        home_data.domIDs.list
+      );
+    }
+  }
+  function _showModal(modalEl) {
+    // 모달창 생길때 스크롤바 안생기게 함
+    document.body.style.overflow = home_data.modal.hidden;
+    // getElementById는 document의 메서드 (다른 자식 메서드에서 사용불가)
+    var modal = modalEl.querySelector(home_data.domIDs.modalFrame);
+    modal.classList.add(home_data.modal.show); // 모달창 보이기
+  }
+  function _hideModal(modalEl) {
+    document.body.style.overflow = home_data.modal.auto;
+    var modal = modalEl.querySelector(home_data.domIDs.modalFrame);
+    modal.classList.remove(home_data.modal.show); // 모달창 감추기
+  }
+
   function init(params) {
     var data = { params };
 
@@ -69,6 +100,7 @@ var home = (function() {
     /****************** 자주 사용하는 변수 선언 ****************/
 
     home_data.params = params; // 비동기 업데이트시 params를 사용하기 위함
+    home_data.clickedMovieID = -1;
     home_data.movies =
       JSON.parse(localStorage.getItem(home_data.localStorageIDs.movies)) || []; // Movies 데이터 배열
     home_data.wishList =
@@ -180,21 +212,7 @@ var home = (function() {
 
     // 서버에서 한번 접속한 다음에는 로컬스토리지에서 읽어온 데이티로 렌더링함
     if (home_data.movies.length !== 0) {
-      if (home_data.checked === true) {
-        // 위시리스트 버튼이 클릭되어 있는 경우 위시리스트만 렌더링함
-        lib.dom.updateAndRenderMany(
-          components.item,
-          home_data.wishList,
-          home_data.domIDs.list
-        );
-      } else {
-        // 위시리스트 버튼이 클릭되지 않은 경우 전체 무비리스트 렌더링함
-        lib.dom.updateAndRenderMany(
-          components.item,
-          home_data.movies,
-          home_data.domIDs.list
-        );
-      }
+      _renderMoviesByWishListBtnState(home_data.checked);
     }
     return doms;
   }
@@ -215,19 +233,9 @@ var home = (function() {
       // 위시리스트 버튼을 클릭한 경우
       if (e.target.id === home_data.domIDs.wishList) {
         if (home_data.checked === false) {
-          lib.dom.updateAndRenderMany(
-            components.item,
-            home_data.wishList,
-            home_data.domIDs.list
-          ); // 전체 아이템 => 위시리스트 아이템 렌더링
           home_data.checked = true;
           home_data.wishBtnString = home_data.btnStrings.wishBtnClicked; // 버튼텍스트 변경
         } else {
-          lib.dom.updateAndRenderMany(
-            components.item,
-            home_data.movies,
-            home_data.domIDs.list
-          ); // 위시리스트 아이템 => 전체 아이템 렌더링
           home_data.checked = false;
           home_data.wishBtnString = home_data.btnStrings.wishBtnUndo; // 버튼텍스트 변경
         }
@@ -247,6 +255,9 @@ var home = (function() {
           { wishBtnString: home_data.wishBtnString },
           home_data.domIDs.nav
         );
+
+        // 위시리스트 버튼 상태에 따라 전체 아이템 디스플레이 또는 위시리스트 디스플레이
+        _renderMoviesByWishListBtnState(home_data.checked);
       }
     });
 
@@ -291,12 +302,9 @@ var home = (function() {
 
       //아이템 삭제 버튼을 클릭한 경우
       if (e.target.id === home_data.domIDs.delete) {
-        console.log("modal opended !");
-        // 모달창 생길때 스크롤바 안생기게 함
-        document.body.style.overflow = home_data.modal.hidden;
-        // getElementById는 document의 메서드 (다른 자식 메서드에서 사용불가)
-        var modal = doms.modal.querySelector(home_data.domIDs.modalFrame);
-        modal.classList.add(home_data.modal.show); // 모달창 보이기
+        // 모달창 삭제 버튼을 클릭할때 이전에 무슨 영화를 삭제하려고 하는지 기억하기 위함
+        home_data.clickedMovieID = e.target.parentElement.id;
+        _showModal(doms.modal);
       }
 
       // 찜하기(하트)를 클릭한 경우
@@ -313,14 +321,15 @@ var home = (function() {
                 return movie.id !== parseInt(e.target.parentElement.id);
               }); // undo pick 이므로 home_data.wishList 배열에서 unpick 한 아이템을 제거함
             }
-            // 전역변수 값이 변경되면 로컬 스토리지에 업데이트함 (wishList 값 변경됨)
-            localStorage.setItem(
-              home_data.localStorageIDs.wishList,
-              JSON.stringify(home_data.wishList)
-            );
           }
           return movie;
         });
+
+        // 전역변수 값이 변경되면 로컬 스토리지에 업데이트함 (wishList 값 변경됨)
+        localStorage.setItem(
+          home_data.localStorageIDs.wishList,
+          JSON.stringify(home_data.wishList)
+        );
 
         // movies 중 특정 movie 의 속성(pick)이 변경되었기 때문에 다시 로컬스토리에 업데이트 해줘야함 (movies 값 변경됨)
         localStorage.setItem(
@@ -328,19 +337,7 @@ var home = (function() {
           JSON.stringify(home_data.movies)
         );
 
-        if (home_data.checked === true) {
-          lib.dom.updateAndRenderMany(
-            components.item,
-            home_data.wishList,
-            home_data.domIDs.list
-          ); // 위시리스트 버튼이 클릭된 상태에서 하트를 클릭한 경우 위시리스트 아이템만 리렌더링함
-        } else {
-          lib.dom.updateAndRenderMany(
-            components.item,
-            home_data.movies,
-            home_data.domIDs.list
-          ); // 위시리스트 버튼이 클릭되지 않은 상태에서 하트를 클릭한 경우 전체 아이템을 리렌더링함
-        }
+        _renderMoviesByWishListBtnState(home_data.checked);
 
         // 위시리스트 아이템 확인용 출력
         console.log("====== picked items ========");
@@ -356,15 +353,32 @@ var home = (function() {
 
       // 모달창 close 버튼 클릭한 경우
       if (e.target.id === home_data.domIDs.modalClose) {
-        // 모달창 생길때 스크롤바 안생기게 함
-        document.body.style.overflow = home_data.modal.auto;
-        var modal = doms.modal.querySelector(home_data.domIDs.modalFrame);
-        modal.classList.remove(home_data.modal.show); // 모달창 감추기
+        _hideModal(doms.modal);
       }
       // 모달창 delete 버튼 클릭한 경우
       if (e.target.id === home_data.domIDs.modalDelete) {
         // 삭제한 영화를 다시 추가할수는 없으니까 위시리스트까지 삭제해도 될듯
         // 무비삭제  전체 리스트 + 위시리스트 모두 해당 무비 삭제
+        home_data.movies = home_data.movies.filter(function(movie) {
+          return movie.id !== parseInt(home_data.clickedMovieID);
+        });
+        home_data.wishList = home_data.wishList.filter(function(movie) {
+          return movie.id !== parseInt(home_data.clickedMovieID);
+        });
+        home_data.clickedMovieID = -1;
+        // 전역변수 movies, wishLIst 값이 변경되었으므로 로컬스토리지 업데이트함
+        localStorage.setItem(
+          home_data.localStorageIDs.movies,
+          JSON.stringify(home_data.movies)
+        );
+        localStorage.setItem(
+          home_data.localStorageIDs.wishList,
+          JSON.stringify(home_data.wishList)
+        );
+        _hideModal(doms.modal);
+
+        // 위시리스트 버튼 상태에 따라 전체 아이템 디스플레이 또는 위시리스트 디스플레이
+        _renderMoviesByWishListBtnState(home_data.checked);
       }
     });
   }
