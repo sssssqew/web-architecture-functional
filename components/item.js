@@ -1,4 +1,6 @@
 import lib from "../lib/index.js";
+import heartUrl from "../resources/undo-pick.png";
+import defaultMovieCover from "../resources/default-movie.png";
 
 // item 컴포넌트는 각각이 서로 다른 렉시컬 실행환경을 가져야 하므로 즉시실행함수로 한번만 실행하면 하나의 실행환경만 가지게 됨
 // 여러개의 서로 다른 실행환경을 가지려면 item 을 클로저로 만들어서 실행환경을 만들고 싶을때마다 함수를 실행해야 함
@@ -13,12 +15,12 @@ var item = (function() {
     rating: "0",
     year: "",
     runtime: "",
-    cover: "../resources/default-movie.png",
+    cover: defaultMovieCover,
     summary: "",
     genres: "",
     trailer: "",
     torrentUrl: "",
-    pick: "../resources/undo-pick.png"
+    pick: heartUrl
   };
 
   //  아이템을 클릭했을때 image를 클릭하느냐 li 배경을 클릭하느냐 title을 클릭하느냐에 따라 e.target이 달라져서 그냥 모든 요소에 같은 id값을 삽입했음

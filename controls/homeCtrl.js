@@ -3,6 +3,9 @@ import components from "../components/index.js";
 import lib from "../lib/index.js";
 import item from "../components/item.js";
 
+import emptyHeartUrl from "../resources/undo-pick.png";
+import fullHeartUrl from "../resources/pick.jpg";
+
 // 데이터 유효성 검사하기
 //  에러 처리하기
 
@@ -15,6 +18,7 @@ var home = (function() {
 
   // 헬퍼 함수 (중복되는 코드 정리)
   function _renderMoviesByWishListBtnState(btnState) {
+    // 변수만 인자로 넣어주면 됨
     if (btnState === true) {
       // 위시리스트 버튼이 클릭되어 있는 경우 위시리스트만 렌더링함
       lib.dom.updateAndRenderMany(
@@ -81,8 +85,8 @@ var home = (function() {
 
     home_data.heartIconUrls = {
       // 현재 페이지에서 사용할 하트 아이콘 리소스 주소
-      empty: "../resources/undo-pick.png",
-      full: "../resources/pick.jpg"
+      empty: emptyHeartUrl,
+      full: fullHeartUrl
     };
 
     home_data.btnStrings = {
@@ -135,43 +139,38 @@ var home = (function() {
     // 이렇게 하면 서버에 여러번 접속함으로 인한 사용자 불편함을 해소하고 오프라인에서도 사용가능함
     // 그러나 DB에서 실시간으로 데이터를 바로 바로 가져와서 렌더링해야 하는 경우 아래 코드처럼 짜면 안된다.
     if (home_data.movies.length === 0) {
-      lib.server
-        .transfer(LIST_MOVIES_URL)
-        .then(function(res) {
-          return res.json();
-        })
-        .then(function(sdata) {
-          // API 에서 받은 값 중에서 필요한 값만 추출해서 사용하고 내가 필요한 속성은 따로 추가하여 사용함
-          // 여기서 pick은 API에서 추출한 속성이 아니라 내가 필요해서 추가한 속성임
-          console.log(sdata.data.movies.length);
-          home_data.movies = sdata.data.movies.map(function(movie) {
-            return {
-              id: movie.id,
-              title: movie.title,
-              rating: movie.rating,
-              year: movie.year,
-              runtime: movie.runtime,
-              cover: movie.medium_cover_image,
-              summary: movie.summary,
-              genres: movie.genres ? movie.genres.join(" #") : "",
-              trailer: movie.yt_trailer_code,
-              torrentUrl: movie.torrents[1] ? movie.torrents[1].url : "",
-              pick: home_data.heartIconUrls.empty
-            };
-          });
-
-          // 서로 다른 페이지에서 movies 데이터를 공유하기 위하여 로컬스토리지에 저장함
-          // 전역변수 값이 변경되면 로컬 스토리지에 업데이트함 (movies 값 변경됨)
-          localStorage.setItem(
-            home_data.localStorageIDs.movies,
-            JSON.stringify(home_data.movies)
-          );
-          lib.dom.updateAndRenderMany(
-            components.item,
-            home_data.movies,
-            home_data.domIDs.list
-          );
+      lib.server.transfer(LIST_MOVIES_URL).then(function(res) {
+        // API 에서 받은 값 중에서 필요한 값만 추출해서 사용하고 내가 필요한 속성은 따로 추가하여 사용함
+        // 여기서 pick은 API에서 추출한 속성이 아니라 내가 필요해서 추가한 속성임
+        console.log(res.data.data.movies.length);
+        home_data.movies = res.data.data.movies.map(function(movie) {
+          return {
+            id: movie.id,
+            title: movie.title,
+            rating: movie.rating,
+            year: movie.year,
+            runtime: movie.runtime,
+            cover: movie.medium_cover_image,
+            summary: movie.summary,
+            genres: movie.genres ? movie.genres.join(" #") : "",
+            trailer: movie.yt_trailer_code,
+            torrentUrl: movie.torrents[1] ? movie.torrents[1].url : "",
+            pick: home_data.heartIconUrls.empty
+          };
         });
+
+        // 서로 다른 페이지에서 movies 데이터를 공유하기 위하여 로컬스토리지에 저장함
+        // 전역변수 값이 변경되면 로컬 스토리지에 업데이트함 (movies 값 변경됨)
+        localStorage.setItem(
+          home_data.localStorageIDs.movies,
+          JSON.stringify(home_data.movies)
+        );
+        lib.dom.updateAndRenderMany(
+          components.item,
+          home_data.movies,
+          home_data.domIDs.list
+        );
+      });
     }
     // 위시리스트 버튼 표시, 위시리스트 버튼 텍스트 설정
     components.nav.updateData({

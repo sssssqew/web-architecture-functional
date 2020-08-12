@@ -1,8 +1,10 @@
+import deleteImgUrl from "../resources/delete.png";
+
 var modal = (function() {
   "use strict";
 
   var modal_data = {
-    src: "../resources/delete.png"
+    src: deleteImgUrl
   };
   function getTemplate() {
     return `<div id="modal-frame" class="modal-frame">

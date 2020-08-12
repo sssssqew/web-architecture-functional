@@ -1,3 +1,5 @@
+// Parcel 로 빌드된 dist 폴더만 netlify 나 호스팅 앱에 업로드하면 됨
+
 console.time("rendertime");
 import controls from "./controls/index.js";
 import lib from "./lib/index.js";
