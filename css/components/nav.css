@@ -19,6 +19,7 @@
 .nav-btn {
   width: 120px;
   border: 2px solid skyblue;
+  background: black;
   color: skyblue;
 }
 .nav-wish-list {
