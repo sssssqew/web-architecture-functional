@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "rm -rf dist && rm -rf .cache/ && parcel index.html --open",
-    "build": "rm -rf dist && rm -rf .cache/ && parcel build index.html"
+    "build": "rm -rf dist && rm -rf .cache/ && parcel build index.html",
+    "production": "npx -p parcel-bundler && npm run build"
   },
   "repository": {
     "type": "git",
