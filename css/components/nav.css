@@ -25,6 +25,7 @@
 .nav-wish-list {
   width: 150px;
   border: 2px solid red;
+  background: black;
   color: red;
 }
 
