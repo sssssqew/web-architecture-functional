@@ -60,3 +60,11 @@ console.timeEnd("rendertime");
 //   console.log(source.fruit.price.krw, target.fruit.price.krw);
 //   return target;
 // }
+
+// 로컬스토리지 초기화 하기 전에 마지막 업데이트 사항을 서버에 저장하기
+// 브라우저 종료전 로컬스토리지 전부 초기화 하기
+window.onbeforeunload = function(e) {
+  localStorage.clear();
+
+  return "Please click 'Stay on this Page' and we will give you candy";
+};

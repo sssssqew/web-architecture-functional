@@ -8,6 +8,7 @@ import fullHeartUrl from "../resources/pick.jpg";
 
 // 데이터 유효성 검사하기
 //  에러 처리하기
+// todo : 로그아웃 하거나 브라우저 종료할때 로컬 스토리지 비워야 함
 
 var home = (function() {
   "use strict";
