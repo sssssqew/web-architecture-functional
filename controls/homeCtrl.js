@@ -83,7 +83,7 @@ var home = (function() {
     home_data.server = {
       // 현재 페이지에서 사용할 API 관련 상수 모음
       numOfMovies: 50,
-      proxyUrl: "http://localhost:8081/", // 프록시 주소 (CORS 해결)
+      proxyUrl: "https://api-proxy-0.herokuapp.com/", // 프록시 주소 (CORS 해결)
       baseUrl: "https://yts.lt/api/v2/" // 기본 API 주소
     };
 
