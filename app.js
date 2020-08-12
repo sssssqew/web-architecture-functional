@@ -63,8 +63,11 @@ console.timeEnd("rendertime");
 
 // 로컬스토리지 초기화 하기 전에 마지막 업데이트 사항을 서버에 저장하기
 // 브라우저 종료전 로컬스토리지 전부 초기화 하기
-window.onbeforeunload = function(e) {
-  localStorage.clear();
+// 문제는 새로고침할때도 초기화하는데 새로고침할때는 초기화하길 원하지 않음
+// 아니면 그냥 로그아웃 하기전에만 초기화해야하겠음
 
-  return "Please click 'Stay on this Page' and we will give you candy";
-};
+// window.onunload = function(e) {
+//   localStorage.clear();
+
+//   return "Please click 'Stay on this Page' and we will give you candy";
+// };

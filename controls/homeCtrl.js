@@ -69,7 +69,10 @@ var home = (function() {
       delete: "item-delete"
     };
 
-    home_data.localStorageIDs = {
+    // 브라우저가 종료될때만 스토리지가 자동으로 비어지도록 session storage로 변경함
+    // local storage는 브라우저를 종료해도 남아있어서 사용하기 애매함
+    // 로그아웃 하기전에 세션 스토리지 비워야 함
+    home_data.sessionStorageIDs = {
       // 현재 페이지에서 사용할 로컬 스토리지의 ID 모음
       movies: "movies",
       wishList: "wishList",
@@ -107,22 +110,25 @@ var home = (function() {
     home_data.params = params; // 비동기 업데이트시 params를 사용하기 위함
     home_data.clickedMovieID = -1;
     home_data.movies =
-      JSON.parse(localStorage.getItem(home_data.localStorageIDs.movies)) || []; // Movies 데이터 배열
+      JSON.parse(sessionStorage.getItem(home_data.sessionStorageIDs.movies)) ||
+      []; // Movies 데이터 배열
     home_data.wishList =
-      JSON.parse(localStorage.getItem(home_data.localStorageIDs.wishList)) ||
-      []; // 위시리스트 데이터 배열
+      JSON.parse(
+        sessionStorage.getItem(home_data.sessionStorageIDs.wishList)
+      ) || []; // 위시리스트 데이터 배열
     home_data.checked =
-      JSON.parse(localStorage.getItem(home_data.localStorageIDs.wishButton)) ||
-      false; // 위시리스트 버튼 클릭여부 판단
+      JSON.parse(
+        sessionStorage.getItem(home_data.sessionStorageIDs.wishButton)
+      ) || false; // 위시리스트 버튼 클릭여부 판단
     home_data.wishBtnString =
       JSON.parse(
-        localStorage.getItem(home_data.localStorageIDs.wishBtnString)
+        sessionStorage.getItem(home_data.sessionStorageIDs.wishBtnString)
       ) || home_data.btnStrings.wishBtnUndo; // 현재 위시리스트 버튼 텍스트
 
     return data;
   }
 
-  // fetch data from server, REST API, localStorage, URL parameters, URL querystring (Model)
+  // fetch data from server, REST API, sessionStorage, URL parameters, URL querystring (Model)
   function getData(initData) {
     // var proxy =
     //   "http://ec2-13-125-247-196.ap-northeast-2.compute.amazonaws.com:8081/"; // 포트포워딩 설정
@@ -162,8 +168,8 @@ var home = (function() {
 
         // 서로 다른 페이지에서 movies 데이터를 공유하기 위하여 로컬스토리지에 저장함
         // 전역변수 값이 변경되면 로컬 스토리지에 업데이트함 (movies 값 변경됨)
-        localStorage.setItem(
-          home_data.localStorageIDs.movies,
+        sessionStorage.setItem(
+          home_data.sessionStorageIDs.movies,
           JSON.stringify(home_data.movies)
         );
         lib.dom.updateAndRenderMany(
@@ -240,12 +246,12 @@ var home = (function() {
           home_data.wishBtnString = home_data.btnStrings.wishBtnUndo; // 버튼텍스트 변경
         }
         // 전역변수 값이 변경되면 로컬 스토리지에 업데이트함 (checked, wishBtnString 값 변경됨)
-        localStorage.setItem(
-          home_data.localStorageIDs.wishButton,
+        sessionStorage.setItem(
+          home_data.sessionStorageIDs.wishButton,
           JSON.stringify(home_data.checked)
         );
-        localStorage.setItem(
-          home_data.localStorageIDs.wishBtnString,
+        sessionStorage.setItem(
+          home_data.sessionStorageIDs.wishBtnString,
           JSON.stringify(home_data.wishBtnString)
         );
 
@@ -326,14 +332,14 @@ var home = (function() {
         });
 
         // 전역변수 값이 변경되면 로컬 스토리지에 업데이트함 (wishList 값 변경됨)
-        localStorage.setItem(
-          home_data.localStorageIDs.wishList,
+        sessionStorage.setItem(
+          home_data.sessionStorageIDs.wishList,
           JSON.stringify(home_data.wishList)
         );
 
         // movies 중 특정 movie 의 속성(pick)이 변경되었기 때문에 다시 로컬스토리에 업데이트 해줘야함 (movies 값 변경됨)
-        localStorage.setItem(
-          home_data.localStorageIDs.movies,
+        sessionStorage.setItem(
+          home_data.sessionStorageIDs.movies,
           JSON.stringify(home_data.movies)
         );
 
@@ -367,12 +373,12 @@ var home = (function() {
         });
         home_data.clickedMovieID = -1;
         // 전역변수 movies, wishLIst 값이 변경되었으므로 로컬스토리지 업데이트함
-        localStorage.setItem(
-          home_data.localStorageIDs.movies,
+        sessionStorage.setItem(
+          home_data.sessionStorageIDs.movies,
           JSON.stringify(home_data.movies)
         );
-        localStorage.setItem(
-          home_data.localStorageIDs.wishList,
+        sessionStorage.setItem(
+          home_data.sessionStorageIDs.wishList,
           JSON.stringify(home_data.wishList)
         );
         _hideModal(doms.modal);
