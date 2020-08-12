@@ -4,7 +4,7 @@ import lib from "../lib/index.js";
 import item from "../components/item.js";
 
 import emptyHeartUrl from "../resources/undo-pick.png";
-import fullHeartUrl from "../resources/pick.jpg";
+import fullHeartUrl from "../resources/pick.png";
 
 // 데이터 유효성 검사하기
 //  에러 처리하기
