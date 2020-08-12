@@ -16,17 +16,18 @@ var about = (function() {
       detail: "detail"
     };
 
-    about_data.localStorageIDs = {
+    about_data.sessionStorageIDs = {
       movies: "movies"
     };
 
     about_data.params = params; // 비동기 업데이트시 params를 사용하기 위함
     about_data.movies =
-      JSON.parse(localStorage.getItem(about_data.localStorageIDs.movies)) || [];
+      JSON.parse(sessionStorage.getItem(about_data.sessionStorageIDs.movies)) ||
+      [];
     return data;
   }
 
-  // fetch data from server, REST API, localStorage, URL parameters, URL querystring (Model)
+  // fetch data from server, REST API, sessionStorage, URL parameters, URL querystring (Model)
   function getData(initData) {
     // 파라미터가 없는 경우에는 영화를 클릭하지 않은 경우이므로 아래 프로세스 진행 필요없음
     // 특정 영화를 클릭한 경우 클로저 환경(메모리)에 이전에 업데이트된 정보가 남아있기 때문에
