@@ -263,6 +263,8 @@ var home = (function() {
         );
 
         // 위시리스트 버튼 상태에 따라 전체 아이템 디스플레이 또는 위시리스트 디스플레이
+        // 이것도 사실 세션 스토리지에 전체무비 HTML 스트링이나 위시리스트 HTML 스트링으로 저장해서 캐싱하고 있었으면 곧바로 렌더링만 해주면 됨
+        // 그래도 어차피 전체 다 렌더링해주는건 같음
         _renderMoviesByWishListBtnState(home_data.checked);
       }
     });
@@ -319,9 +321,12 @@ var home = (function() {
           // 위시리스트에 추가하려는 아이템을 찾음
           if (movie.id === parseInt(e.target.parentElement.id)) {
             if (movie.pick === home_data.heartIconUrls.empty) {
+              // e.target 이 이미지이므로 해당 이미지의 소스 주소만 변경해주면 될듯
+              e.target.src = home_data.heartIconUrls.full;
               movie.pick = home_data.heartIconUrls.full; // pick 이므로 색칠한 하트 모양으로 리소스 주소를 변경함
               home_data.wishList.push(movie); // pick 이므로  home_data.wishList 배열 끝에 pick 한 아이템을 추가함
             } else {
+              e.target.src = home_data.heartIconUrls.empty;
               movie.pick = home_data.heartIconUrls.empty; // undo pick 이므로 빈 하트 모양으로 리소스 주소를 변경함
               home_data.wishList = home_data.wishList.filter(function(movie) {
                 return movie.id !== parseInt(e.target.parentElement.id);
@@ -343,7 +348,8 @@ var home = (function() {
           JSON.stringify(home_data.movies)
         );
 
-        _renderMoviesByWishListBtnState(home_data.checked);
+        // 하트 클릭 하나에 전체 리스트의 렌더링을 모두 해주는건 성능 낭비 (하트 리소스 주소만 변경해주고 끝내기)
+        // _renderMoviesByWishListBtnState(home_data.checked);
 
         // 위시리스트 아이템 확인용 출력
         console.log("====== picked items ========");
