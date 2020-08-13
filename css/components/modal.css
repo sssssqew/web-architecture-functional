@@ -90,3 +90,25 @@
   justify-content: center;
   align-items: center;
 }
+
+@media (max-width: 550px) {
+  .modal-content {
+    width: 90%;
+  }
+  .modal-body {
+    font-size: 0.9rem;
+  }
+  .modal-footer {
+    justify-content: center;
+  }
+  .modal-btns {
+    /* border: 1px solid red; */
+    width: 100%;
+    justify-content: center;
+    font-size: 0.9rem;
+  }
+  .modal-delete,
+  .modal-close {
+    margin: 10px;
+  }
+}

@@ -29,11 +29,14 @@ var detail = (function() {
   function getTemplate() {
     return `<div id=${detail_data.id} class="detail-card">
                   <div class="detail-main">
-                    <div>
+                    <div class="detail-info">
                       <img src="${detail_data.cover}" class="detail-cover"/>
                       <h4 class="detail-title">${detail_data.title} (${
       detail_data.rating
-    }) (${detail_data.year}) (${detail_data.runtime} min.)</h4>
+    }) </h4>
+                      <h4 class="detail-title">${detail_data.year} (${
+      detail_data.runtime
+    } min.)</h4>
                       
                        <a href="${
                          detail_data.trailer
@@ -58,6 +61,7 @@ var detail = (function() {
                   <div class="detail-genres">
                     #${detail_data.genres}
                   </div>
+
                 </div>`;
   }
 

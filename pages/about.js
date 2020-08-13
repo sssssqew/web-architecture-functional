@@ -6,7 +6,7 @@ var about = (function() {
   function getTemplate() {
     return `<div class="about-page">
                   <div id="nav" class="about-nav"></div>
-                  <div id="detail" ></div>
+                  <div id="detail" class="about-detail"></div>
                 </div>`;
   }
   // function updateData(updateObj) {
