@@ -49,6 +49,34 @@ var home = (function() {
     modal.classList.remove(home_data.modal.show); // 모달창 감추기
   }
 
+  function _getScrollPosition() {
+    var supportPageOffset = window.pageXOffset !== undefined;
+    var isCSS1Compat = (document.compatMode || "") === "CSS1Compat";
+
+    var x = supportPageOffset
+      ? window.pageXOffset
+      : isCSS1Compat
+      ? document.documentElement.scrollLeft
+      : document.body.scrollLeft;
+    var y = supportPageOffset
+      ? window.pageYOffset
+      : isCSS1Compat
+      ? document.documentElement.scrollTop
+      : document.body.scrollTop;
+    return { xpos: x, ypos: y };
+  }
+
+  // about 페이지로 이동하기 전에 스크롤 위치를 기억했다가 다시 home으로 돌아왔을때 해당 위치로 돌아올수 있게 함
+  function _saveScrollPosition() {
+    console.log("before scroll...");
+    console.log(_getScrollPosition());
+
+    sessionStorage.setItem(
+      home_data.sessionStorageIDs.scrollPosition,
+      JSON.stringify(_getScrollPosition())
+    );
+  }
+
   function init(params) {
     var data = { params };
 
@@ -77,7 +105,8 @@ var home = (function() {
       movies: "movies",
       wishList: "wishList",
       wishButton: "wishButton",
-      wishBtnString: "wishBtnString"
+      wishBtnString: "wishBtnString",
+      scrollPosition: "scrollPosition"
     };
 
     home_data.server = {
@@ -124,6 +153,10 @@ var home = (function() {
       JSON.parse(
         sessionStorage.getItem(home_data.sessionStorageIDs.wishBtnString)
       ) || home_data.btnStrings.wishBtnUndo; // 현재 위시리스트 버튼 텍스트
+    home_data.scrollPosition =
+      JSON.parse(
+        sessionStorage.getItem(home_data.sessionStorageIDs.scrollPosition)
+      ) || 0;
 
     return data;
   }
@@ -218,7 +251,12 @@ var home = (function() {
 
     // 서버에서 한번 접속한 다음에는 로컬스토리지에서 읽어온 데이티로 렌더링함
     if (home_data.movies.length !== 0) {
+      console.log(home_data.scrollPosition);
       _renderMoviesByWishListBtnState(home_data.checked);
+      window.scroll(
+        home_data.scrollPosition.xpos,
+        home_data.scrollPosition.ypos
+      );
     }
     return doms;
   }
@@ -234,6 +272,7 @@ var home = (function() {
     doms.nav.addEventListener("click", function(e) {
       // home, about 등의 네비게이션 버튼을 클릭한 경우
       if (e.target.dataset.url) {
+        _saveScrollPosition();
         lib.router(e.target.dataset.url); // 해당 주소로 라우팅
       }
       // 위시리스트 버튼을 클릭한 경우
@@ -305,6 +344,8 @@ var home = (function() {
         e.target.id !== home_data.domIDs.pick &&
         e.target.id !== home_data.domIDs.delete
       ) {
+        _saveScrollPosition();
+
         lib.router(`/about/${e.target.id}`);
       }
 
