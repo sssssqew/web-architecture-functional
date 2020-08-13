@@ -15,3 +15,9 @@
 .search-box::placeholder {
   color: white;
 }
+
+@media (max-width: 550px) {
+  .search-box::placeholder {
+    font-size: 0.7rem;
+  }
+}

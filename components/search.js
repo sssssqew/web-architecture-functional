@@ -8,7 +8,7 @@ var search = (function() {
   };
 
   function getTemplate() {
-    return `<input type="text" placeholder="search movie here ... (type the title of movie and enter) " class="search-box"/>`;
+    return `<input type="text" placeholder="search movie here ..." class="search-box"/>`;
   }
   function updateData(updateObj) {
     lib.dom.updateObj(search_data, updateObj);
