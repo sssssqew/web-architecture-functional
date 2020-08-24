@@ -16,3 +16,5 @@ Bundling without webpack
 Routing with simple function  
 Functional programming
 Bundling and minifying with parcel
+
+https://sylee-movies.netlify.app
