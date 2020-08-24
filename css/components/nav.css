@@ -52,11 +52,10 @@
 @media (max-width: 550px) {
   .nav-btn,
   .nav-wish-list {
-    width: 40px;
+    width: 55px;
     height: 30px;
     font-size: 0.7rem;
     border-radius: 5px;
-    margin: 2px;
     padding: 1px;
     margin: 5px;
   }
