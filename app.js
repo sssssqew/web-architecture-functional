@@ -21,10 +21,16 @@ window.routes = {
     controls.notfound.control();
   }
 };
-lib.router("/");
 
+// 사용자가 마지막에 본 페이지를 기억해뒀다가 새로고침시 해당 페이지로 이동함
+const path = sessionStorage.getItem("currentUrl") || "/";
+lib.router(path);
+console.log("app !!!");
+
+// 뒤로가기나 앞으로가기 버튼 클릭했을때
 // navigate forwards or backwards from url history
 window.addEventListener("popstate", function(e) {
+  console.log(window.location.pathname);
   lib.router(window.location.pathname);
 });
 console.timeEnd("rendertime");
