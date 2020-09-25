@@ -270,11 +270,20 @@ var home = (function() {
 
     // 네비게이션 바를 클릭한 경우
     doms.nav.addEventListener("click", function(e) {
+      var routingUrl = e.target.dataset.url;
+      var movieId = sessionStorage.getItem("movie_id");
       // home, about 등의 네비게이션 버튼을 클릭한 경우
-      if (e.target.dataset.url) {
+      if (routingUrl) {
+        // 만약 이전에 상세 페이지에 한번이라도 들어왔다면 about 버튼 클릭시 최근 상세페이지로 이동하도록 navigation url을 변경함
+        // 물론 모든 페이지들이 클로저라서 상세페이지에 한번이라도 들어왔다면 메모리에 저장된 데이터로 최근 상세페이지를 보여주지만
+        // 만약에 홈페이지를 새로고침하게 되면 최근 상세페이지 데이터들이 사라지므로 about 버튼으로 다시 들어가면 초기화되었음
+        if (routingUrl === "/about" && movieId) {
+          routingUrl = `/about/${movieId}`;
+        }
         _saveScrollPosition();
-        lib.router(e.target.dataset.url); // 해당 주소로 라우팅
+        lib.router(routingUrl);
       }
+
       // 위시리스트 버튼을 클릭한 경우
       if (e.target.id === home_data.domIDs.wishList) {
         if (home_data.checked === false) {

@@ -20,7 +20,7 @@ var about = (function() {
       movies: "movies"
     };
 
-    about_data.params = params; // 비동기 업데이트시 params를 사용하기 위함
+    about_data.params = params; // 련재 페이지에서 비동기 업데이트시 params를 사용하기 위함
     about_data.movies =
       JSON.parse(sessionStorage.getItem(about_data.sessionStorageIDs.movies)) ||
       [];
@@ -40,6 +40,9 @@ var about = (function() {
         return movie.id === parseInt(initData.params.id);
       });
       components.detail.updateData(clicked_movie[0]);
+
+      // 한번이라도 상세 페이지에 들어온 경우 현재 상세 페이지의 id 를 저장했다가 다른 페이지에서 다시 about 버튼을 클릭하면 최근에 본 상세페이지로 이동함
+      sessionStorage.setItem("movie_id", initData.params.id);
     }
     components.nav.updateData({
       wishBtnDisplay: false
@@ -73,8 +76,16 @@ var about = (function() {
     console.log("aboutpage handler attached !");
 
     doms.nav.addEventListener("click", function(e) {
-      if (e.target.dataset.url) {
-        lib.router(e.target.dataset.url);
+      var routingUrl = e.target.dataset.url;
+      var movieId = sessionStorage.getItem("movie_id");
+      if (routingUrl) {
+        // 만약 이전에 상세 페이지에 한번이라도 들어왔다면 about 버튼 클릭시 최근 상세페이지로 이동하도록 navigation url을 변경함
+        // 물론 모든 페이지들이 클로저라서 상세페이지에 한번이라도 들어왔다면 메모리에 저장된 데이터로 최근 상세페이지를 보여주지만
+        // 만약에 홈페이지를 새로고침하게 되면 최근 상세페이지 데이터들이 사라지므로 about 버튼으로 다시 들어가면 초기화되었음
+        if (routingUrl === "/about" && movieId) {
+          routingUrl = `/about/${movieId}`;
+        }
+        lib.router(routingUrl);
       }
     });
   }
