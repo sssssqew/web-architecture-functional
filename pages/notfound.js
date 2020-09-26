@@ -1,7 +1,7 @@
 import lib from "../lib/index.js";
 import notFoundImage from "../resources/notfound.jpg";
 
-// TODO:not found page 만들기
+// 구글에 sorry image 로 검색하면 많이 나옴
 var notfound = (function() {
   "use strict";
 
