@@ -65,7 +65,9 @@ var about = (function() {
     );
     doms[about_data.domIDs.detail] = lib.dom.render(
       about_data.domIDs.detail,
-      components.detail.getTemplate()
+      data.params.id
+        ? components.detail.getTemplate()
+        : "Theres is no movie chosen. please choose movie first :)"
     ); // root must be the first
 
     return doms;

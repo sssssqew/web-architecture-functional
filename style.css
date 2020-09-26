@@ -1,6 +1,7 @@
 /* Parcel이 import 를 인식하기 위해서 ~를 경로 앞에 붙여줘야 함 */
 @import url("~css/pages/home.css");
 @import url("~css/pages/about.css");
+@import url("~css/pages/notfound.css");
 
 @import url("~css/components/item.css");
 @import url("~css/components/detail.css");

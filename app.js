@@ -30,7 +30,8 @@ console.log("app !!!");
 // 뒤로가기나 앞으로가기 버튼 클릭했을때
 // navigate forwards or backwards from url history
 window.addEventListener("popstate", function(e) {
-  console.log(window.location.pathname);
+  console.log("popstate: ", window.location.pathname);
+  console.log("state: ", e.state);
   lib.router(window.location.pathname);
 });
 console.timeEnd("rendertime");
