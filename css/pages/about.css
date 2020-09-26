@@ -18,11 +18,18 @@
 }
 
 .about-detail {
+  /* border: 3px solid blue; */
   width: 100%;
-  /* border: 1px solid red; */
-  height: calc(100vh - 70px);
-  margin-top: 70px;
+  height: calc(100vh - 80px);
+  margin-top: 80px;
+  /* margin-bottom: 10px; */
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@media (max-width: 620px) {
+  .about-detail {
+    align-items: flex-start;
+  }
 }

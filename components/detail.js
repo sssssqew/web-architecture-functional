@@ -1,5 +1,6 @@
 import lib from "../lib/index.js";
 import defaultMovieCover from "../resources/default-movie.png";
+import downArrow from "../resources/down-arrow.png";
 
 // item 컴포넌트는 각각이 서로 다른 렉시컬 실행환경을 가져야 하므로 즉시실행함수로 한번만 실행하면 하나의 실행환경만 가지게 됨
 // 여러개의 서로 다른 실행환경을 가지려면 item 을 클로저로 만들어서 실행환경을 만들고 싶을때마다 함수를 실행해야 함
@@ -15,6 +16,7 @@ var detail = (function() {
     year: 0,
     runtime: 0,
     cover: defaultMovieCover,
+    arrow: downArrow,
     summary: "",
     genres: "",
     trailer: "",
@@ -45,9 +47,12 @@ var detail = (function() {
                        }" target="_blank" class="detail-trailer">${
       detail_data.trailer ? "Click to see trailer" : "No trailer"
     }</a>
+                      <div class="detail-down-arrow">
+                        <img id="detail-down-arrow" src="${detail_data.arrow}"/>
+                      </div>
                     </div>
 
-                    <div class="detail-summary">
+                    <div id="detail-summary" class="detail-summary">
                       ${detail_data.summary} <br/>
                       
                       <a href="${

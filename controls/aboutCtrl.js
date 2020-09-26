@@ -90,6 +90,15 @@ var about = (function() {
         lib.router(routingUrl);
       }
     });
+
+    doms.detail.addEventListener("click", function(e) {
+      if (e.target.id === "detail-down-arrow") {
+        console.log("see summury !!");
+        var summuryEl = doms.detail.querySelector("#detail-summary");
+        summuryEl.classList.toggle("show-summury");
+        console.log(summuryEl);
+      }
+    });
   }
 
   // pay attention to orders of methods
