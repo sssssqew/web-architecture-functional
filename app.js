@@ -32,7 +32,20 @@ console.log("app !!!");
 window.addEventListener("popstate", function(e) {
   console.log("popstate: ", window.location.pathname);
   console.log("state: ", e.state);
-  lib.router(window.location.pathname);
+  if ("state" in window.history && window.history.state !== null) {
+    console.log(window.history.length);
+    // popstate 하면서 length가 감소해야 하는데 라우팅 하면서 내부에 push state가 있어서 다시 length를 증가시킴
+    // 그래서 뒤로가기하면 두번 클릭해야 이전 페이지로 이동하게 됨
+
+    // window 객체에 popped 라는 프로퍼티를 true로 변경해서 popstate가 일어났다는걸 router에 알리고
+    // router에서는 popped가 true인 경우 즉, 뒤로가기를 한 경우에는 push state를 동작시키지 않도록 함
+    // 이렇게 하면 popstate가 일어난 경우에는 다시 pushstate를 하지 않음
+    window.popped = true;
+    lib.router(window.location.pathname);
+
+    // 제대로 동작은 하지만 새로고침해버림
+    // window.location = e.state;
+  }
 });
 console.timeEnd("rendertime");
 
