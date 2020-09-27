@@ -38,13 +38,13 @@ var home = (function() {
   }
   function _showModal(modalEl) {
     // 모달창 생길때 스크롤바 안생기게 함
-    document.body.style.overflow = home_data.modal.hidden;
+    document.body.style.overflow = "hidden";
     // getElementById는 document의 메서드 (다른 자식 메서드에서 사용불가)
     var modal = modalEl.querySelector(home_data.domIDs.modalFrame);
     modal.classList.add(home_data.modal.show); // 모달창 보이기
   }
   function _hideModal(modalEl) {
-    document.body.style.overflow = home_data.modal.auto;
+    document.body.style.overflow = "auto";
     var modal = modalEl.querySelector(home_data.domIDs.modalFrame);
     modal.classList.remove(home_data.modal.show); // 모달창 감추기
   }
@@ -285,13 +285,26 @@ var home = (function() {
       }
 
       // 위시리스트 버튼을 클릭한 경우
+      // 모든 업데이트는 3단계로 진행됨 (데이터 state 변경 -> 로컬스토리지 저장 -> UI 변경)
       if (e.target.id === home_data.domIDs.wishList) {
         if (home_data.checked === false) {
-          home_data.checked = true;
-          home_data.wishBtnString = home_data.btnStrings.wishBtnClicked; // 버튼텍스트 변경
+          lib.utils.setState(home_data, "checked", true);
+          lib.utils.setState(
+            home_data,
+            "wishBtnString",
+            home_data.btnStrings.wishBtnClicked
+          );
+          // home_data.checked = true;
+          // home_data.wishBtnString = home_data.btnStrings.wishBtnClicked; // 버튼텍스트 변경
         } else {
-          home_data.checked = false;
-          home_data.wishBtnString = home_data.btnStrings.wishBtnUndo; // 버튼텍스트 변경
+          lib.utils.setState(home_data, "checked", false);
+          lib.utils.setState(
+            home_data,
+            "wishBtnString",
+            home_data.btnStrings.wishBtnUndo
+          );
+          // home_data.checked = false;
+          // home_data.wishBtnString = home_data.btnStrings.wishBtnUndo; // 버튼텍스트 변경
         }
         // 전역변수 값이 변경되면 로컬 스토리지에 업데이트함 (checked, wishBtnString 값 변경됨)
         sessionStorage.setItem(
@@ -361,13 +374,19 @@ var home = (function() {
       //아이템 삭제 버튼을 클릭한 경우
       if (e.target.id === home_data.domIDs.delete) {
         // 모달창 삭제 버튼을 클릭할때 이전에 무슨 영화를 삭제하려고 하는지 기억하기 위함
-        home_data.clickedMovieID = e.target.parentElement.id;
+        lib.utils.setState(
+          home_data,
+          "clickedMovieID",
+          e.target.parentElement.id
+        );
+        console.log("movie id to delete: ", home_data.clickedMovieID);
+        // home_data.clickedMovieID = e.target.parentElement.id;
         _showModal(doms.modal);
       }
 
       // 찜하기(하트)를 클릭한 경우
       if (e.target.id === home_data.domIDs.pick) {
-        home_data.movies = home_data.movies.map(function(movie) {
+        var changedMovies = home_data.movies.map(function(movie) {
           // 위시리스트에 추가하려는 아이템을 찾음
           if (movie.id === parseInt(e.target.parentElement.id)) {
             if (movie.pick === home_data.heartIconUrls.empty) {
@@ -385,6 +404,8 @@ var home = (function() {
           }
           return movie;
         });
+
+        lib.utils.setState(home_data, "movies", changedMovies);
 
         // 전역변수 값이 변경되면 로컬 스토리지에 업데이트함 (wishList 값 변경됨)
         sessionStorage.setItem(
@@ -421,13 +442,18 @@ var home = (function() {
       if (e.target.id === home_data.domIDs.modalDelete) {
         // 삭제한 영화를 다시 추가할수는 없으니까 위시리스트까지 삭제해도 될듯
         // 무비삭제  전체 리스트 + 위시리스트 모두 해당 무비 삭제
-        home_data.movies = home_data.movies.filter(function(movie) {
+        var changedMovies = home_data.movies.filter(function(movie) {
           return movie.id !== parseInt(home_data.clickedMovieID);
         });
-        home_data.wishList = home_data.wishList.filter(function(movie) {
+        var changedWishList = home_data.wishList.filter(function(movie) {
           return movie.id !== parseInt(home_data.clickedMovieID);
         });
-        home_data.clickedMovieID = -1;
+
+        lib.utils.setState(home_data, "movies", changedMovies);
+        lib.utils.setState(home_data, "wishList", changedWishList);
+        lib.utils.setState(home_data, "clickedMovieID", -1);
+
+        // home_data.clickedMovieID = -1;
         // 전역변수 movies, wishLIst 값이 변경되었으므로 로컬스토리지 업데이트함
         sessionStorage.setItem(
           home_data.sessionStorageIDs.movies,
