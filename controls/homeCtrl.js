@@ -49,7 +49,7 @@ var home = (function() {
       search: "search",
       list: "list",
       modal: "modal",
-      // modalFrame: "#modal-frame",
+      modalFrame: "modal-frame",
       modalDelete: "modal-delete",
       modalClose: "modal-close",
       wishList: "nav-wish-list",
@@ -333,6 +333,7 @@ var home = (function() {
 
       //아이템 삭제 버튼을 클릭한 경우
       if (e.target.id === home_data.domIDs.delete) {
+        var titleOfMovie = e.target.parentElement.querySelector("h5").innerHTML;
         // 모달창 삭제 버튼을 클릭할때 이전에 무슨 영화를 삭제하려고 하는지 기억하기 위함
         lib.utils.setState(
           home_data,
@@ -341,6 +342,18 @@ var home = (function() {
         );
         console.log("movie id to delete: ", home_data.clickedMovieID);
         // home_data.clickedMovieID = e.target.parentElement.id;
+
+        console.log(titleOfMovie);
+
+        // 모달창 바디섹션 풋터섹션 변경
+        lib.dom.updateAndRenderSingle(
+          components.modal,
+          {
+            bodyString: `Are you sure to delete this movie? <br/> ${titleOfMovie} `,
+            footerBtnString: "Delete"
+          },
+          home_data.domIDs.modal
+        );
         lib.dom.showModal(doms.modal);
       }
 

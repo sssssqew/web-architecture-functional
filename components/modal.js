@@ -1,10 +1,14 @@
+import lib from "../lib/index.js";
 import deleteImgUrl from "../resources/delete.png";
 
 var modal = (function() {
   "use strict";
 
+  // TODO:  추후 필요에 따라 모달창 footer 섹션도 변경이 가능하도록 하기
   var modal_data = {
-    src: deleteImgUrl
+    src: deleteImgUrl,
+    bodyString: "",
+    footerBtnString: ""
   };
   function getTemplate() {
     return `<div id="modal-frame" class="modal-frame">
@@ -13,11 +17,11 @@ var modal = (function() {
                       <img src=${modal_data.src}>
                     </div>
                     <div class="modal-body">
-                      Are you sure to delete this movie?
+                      ${modal_data.bodyString}
                     </div>
                     <div class="modal-footer">
                       <div class="modal-btns">
-                        <button id="modal-delete" class="modal-delete">Delete</button>
+                        <button id="modal-delete" class="modal-delete">${modal_data.footerBtnString}</button>
                         <button id="modal-close" class="modal-close">Close</button>
                       </div>
                     </div>
