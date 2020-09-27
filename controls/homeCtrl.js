@@ -36,46 +36,6 @@ var home = (function() {
       );
     }
   }
-  function _showModal(modalEl) {
-    // 모달창 생길때 스크롤바 안생기게 함
-    document.body.style.overflow = "hidden";
-    // getElementById는 document의 메서드 (다른 자식 메서드에서 사용불가)
-    var modal = modalEl.querySelector(home_data.domIDs.modalFrame);
-    modal.classList.add(home_data.modal.show); // 모달창 보이기
-  }
-  function _hideModal(modalEl) {
-    document.body.style.overflow = "auto";
-    var modal = modalEl.querySelector(home_data.domIDs.modalFrame);
-    modal.classList.remove(home_data.modal.show); // 모달창 감추기
-  }
-
-  function _getScrollPosition() {
-    var supportPageOffset = window.pageXOffset !== undefined;
-    var isCSS1Compat = (document.compatMode || "") === "CSS1Compat";
-
-    var x = supportPageOffset
-      ? window.pageXOffset
-      : isCSS1Compat
-      ? document.documentElement.scrollLeft
-      : document.body.scrollLeft;
-    var y = supportPageOffset
-      ? window.pageYOffset
-      : isCSS1Compat
-      ? document.documentElement.scrollTop
-      : document.body.scrollTop;
-    return { xpos: x, ypos: y };
-  }
-
-  // about 페이지로 이동하기 전에 스크롤 위치를 기억했다가 다시 home으로 돌아왔을때 해당 위치로 돌아올수 있게 함
-  function _saveScrollPosition() {
-    console.log("before scroll...");
-    console.log(_getScrollPosition());
-
-    sessionStorage.setItem(
-      home_data.sessionStorageIDs.scrollPosition,
-      JSON.stringify(_getScrollPosition())
-    );
-  }
 
   function init(params) {
     var data = { params };
@@ -89,7 +49,7 @@ var home = (function() {
       search: "search",
       list: "list",
       modal: "modal",
-      modalFrame: "#modal-frame",
+      // modalFrame: "#modal-frame",
       modalDelete: "modal-delete",
       modalClose: "modal-close",
       wishList: "nav-wish-list",
@@ -128,11 +88,11 @@ var home = (function() {
       wishBtnUndo: "Picked items"
     };
 
-    home_data.modal = {
-      show: "show",
-      hidden: "hidden",
-      auto: "auto"
-    };
+    // home_data.modal = {
+    //   show: "show",
+    //   hidden: "hidden",
+    //   auto: "auto"
+    // };
 
     /****************** 자주 사용하는 변수 선언 ****************/
 
@@ -280,7 +240,7 @@ var home = (function() {
         if (routingUrl === "/about" && movieId) {
           routingUrl = `/about/${movieId}`;
         }
-        _saveScrollPosition();
+        lib.dom.saveScrollPosition(home_data.sessionStorageIDs.scrollPosition);
         lib.router(routingUrl);
       }
 
@@ -366,7 +326,7 @@ var home = (function() {
         e.target.id !== home_data.domIDs.pick &&
         e.target.id !== home_data.domIDs.delete
       ) {
-        _saveScrollPosition();
+        lib.dom.saveScrollPosition(home_data.sessionStorageIDs.scrollPosition);
 
         lib.router(`/about/${e.target.id}`);
       }
@@ -381,7 +341,7 @@ var home = (function() {
         );
         console.log("movie id to delete: ", home_data.clickedMovieID);
         // home_data.clickedMovieID = e.target.parentElement.id;
-        _showModal(doms.modal);
+        lib.dom.showModal(doms.modal);
       }
 
       // 찜하기(하트)를 클릭한 경우
@@ -436,7 +396,7 @@ var home = (function() {
 
       // 모달창 close 버튼 클릭한 경우
       if (e.target.id === home_data.domIDs.modalClose) {
-        _hideModal(doms.modal);
+        lib.dom.hideModal(doms.modal);
       }
       // 모달창 delete 버튼 클릭한 경우
       if (e.target.id === home_data.domIDs.modalDelete) {
@@ -463,7 +423,7 @@ var home = (function() {
           home_data.sessionStorageIDs.wishList,
           JSON.stringify(home_data.wishList)
         );
-        _hideModal(doms.modal);
+        lib.dom.hideModal(doms.modal);
 
         // 위시리스트 버튼 상태에 따라 전체 아이템 디스플레이 또는 위시리스트 디스플레이
         _renderMoviesByWishListBtnState(home_data.checked);
