@@ -71,9 +71,8 @@ var home = (function() {
 
     home_data.server = {
       // 현재 페이지에서 사용할 API 관련 상수 모음
-      numOfMovies: 50,
-      proxyUrl: "https://api-proxy-0.herokuapp.com/", // 프록시 주소 (CORS 해결)
-      baseUrl: "https://yts.lt/api/v2/" // 기본 API 주소
+      numOfMovies: 15,
+      baseUrl: "https://yts.mx/api/v2/" // 기본 API 주소
     };
 
     home_data.heartIconUrls = {
@@ -127,10 +126,7 @@ var home = (function() {
     //   "http://ec2-13-125-247-196.ap-northeast-2.compute.amazonaws.com:8081/"; // 포트포워딩 설정
 
     // Movies 데이터를 가져오기 위한 URL 생성
-    var LIST_MOVIES_URL = `${home_data.server.proxyUrl +
-      home_data.server.baseUrl}list_movies.json?limit=${
-      home_data.server.numOfMovies
-    }`;
+    var LIST_MOVIES_URL = `${home_data.server.baseUrl}list_movies.json?limit=${home_data.server.numOfMovies}`;
     console.log(LIST_MOVIES_URL);
 
     // 캐쉬사용 (서버에서 데이터를 한번만 가져옴)
@@ -140,6 +136,8 @@ var home = (function() {
     // 그러나 DB에서 실시간으로 데이터를 바로 바로 가져와서 렌더링해야 하는 경우 아래 코드처럼 짜면 안된다.
     if (home_data.movies.length === 0) {
       lib.server.transfer(LIST_MOVIES_URL).then(function(res) {
+        console.table(res); // 응답값을 테이블로 보여줌
+
         // API 에서 받은 값 중에서 필요한 값만 추출해서 사용하고 내가 필요한 속성은 따로 추가하여 사용함
         // 여기서 pick은 API에서 추출한 속성이 아니라 내가 필요해서 추가한 속성임
         console.log(res.data.data.movies.length);
