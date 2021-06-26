@@ -2,29 +2,43 @@
   /* border: 1px solid yellow; */
   display: inline-block;
   width: 900px;
+  height: 90%;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 .detail-main {
   width: 100%;
+  height: calc(100% - 50px);
   display: flex;
   justify-content: center;
 }
 .detail-info {
   flex: 1;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 .detail-cover {
   width: 100%;
-  min-width: 100%;
-  height: auto;
+  height: calc(100%-120px);
+  overflow: hidden;
+}
+.detail-description {
+  height: 120px;
 }
 .detail-title {
   margin: 0;
-  padding: 5px;
+  height: 30px;
+  line-height: 30px;
+  overflow: hidden;
+}
+.detail-trailer-container {
+  height: 60px;
 }
 .detail-trailer {
   text-decoration: none;
   color: orange;
+  max-height: 60px;
 }
 .detail-trailer:hover {
   font-size: 1.2rem;
@@ -51,38 +65,53 @@
 .detail-summary {
   flex: 1;
   box-sizing: border-box;
-  padding: 20px;
   text-align: justify;
   border-left: 1px solid grey;
   opacity: 0.7;
+  /* overflow: auto; */
+}
+.detail-summary-contents {
+  box-sizing: border-box;
+  padding: 15px;
+  border: 1px solid yellow;
+  height: calc(100% - 50px);
+  overflow: auto;
 }
 
 .detail-torrent {
   float: right;
-  margin-top: 20px;
+  /* margin-top: 20px; */
 }
 .detail-home:hover,
 .detail-torrent:hover {
   color: orange;
 }
 .detail-genres {
-  padding: 10px;
   border-top: 1px solid grey;
   opacity: 0.7;
+  height: 50px;
+  line-height: 50px;
 }
 
 @media (max-width: 780px) {
   .detail-card {
     width: 90%;
+    height: 90%;
   }
 }
 @media (max-width: 620px) {
   .detail-card {
     width: 75%;
-    /* border: 1px solid red; */
+    /* height: 90%; */
+    border: 1px solid blue;
   }
   .detail-main {
+    border: 1px solid red;
     flex-direction: column;
+  }
+  .detail-description {
+    height: 100px;
+    border: 5px solid yellow;
   }
   .detail-title {
     padding: 2px;
@@ -100,7 +129,7 @@
     display: none;
     /* border-top: 1px solid grey; */
     border-left: 1px solid white;
-    /* overflow: auto; */
+    height: calc(100% - 50px);
   }
   .detail-genres {
     width: 60%;
@@ -110,6 +139,10 @@
   }
   .show-summury {
     display: block;
+    border: 5px solid black;
+  }
+  .hide-info {
+    display: none;
   }
 }
 
